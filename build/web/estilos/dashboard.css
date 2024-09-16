@@ -1,0 +1,28 @@
+
+.menu {
+    background-color: #203B8A;
+    height: 1000px;
+    padding: 20px;
+    color: white;
+}
+
+.menu_a {
+    color: white; 
+    text-decoration: none;    
+    padding: 20px;
+    width: 100%;    
+}
+
+.menu_a:hover {
+    color: black;    
+    background-color: #4479A6;
+}
+
+.contenido {
+    background-color: white;
+    height: 1000px;
+}
+
+input.form-control {
+    background-color: #fcfcc5;
+}
