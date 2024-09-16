@@ -11,7 +11,7 @@
         <br><br>
         <div class="col-sm-4">            
             Codigo <br>
-            <input type="text" class="form-control" name="codigo" style="width: 90%" readonly value="<%=a.getCodigo()%>"> <br>
+            <input type="text" class="form-control" name="id" style="width: 90%" readonly value="<%=a.getId()%>"> <br>
             Producto <br>
             <input type="text" class="form-control" name="nombre" style="width: 90%" value="<%=a.getNombre()%>">   
         </div>
@@ -19,7 +19,9 @@
             Descripcion<br>
             <input type="text" class="form-control" name="descripcion" style="width: 90%" value="<%=a.getDescripcion()%>"> <br>       
             Cantidad<br>
-            <input type="number" class="form-control" name="cantidad" style="width: 90%" value="<%=a.getCantidad()%>"><br><br>
+            <input type="number" class="form-control" name="cantidad" style="width: 90%" value="<%=a.getStock()%>"><br><br>
+            PROVEEDOR<br>
+            <input type="number" class="form-control" name="idProveedor" style="width: 90%" value="<%=a.getIdProveedor()%>"><br><br>
         </div>
         <div class="col-sm-4"></div>
     </div>

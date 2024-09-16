@@ -19,3 +19,9 @@ FROM USUARIO INNER JOIN PERSONA ON USUARIO.idPersona = PERSONA.idPersona INNER J
 
 SELECT USUARIO.idUsuario,USUARIO.usuario,USUARIO.contrasena,PERSONA.nombre,PERSONA.apellido,PERSONA.tipoDocumento,PERSONA.numDocumento,PERSONA.telefono,PERSONA.correo,CATE_ROL.nombre AS rolNombre
 FROM USUARIO INNER JOIN PERSONA ON USUARIO.idPersona = PERSONA.idPersona INNER JOIN CATE_ROL ON USUARIO.idRol = CATE_ROL.idRol WHERE USUARIO.idUsuario = 2;
+
+use cawash;
+select * from producto;
+insert into proveedor (razonSocial,ruc,direccion,telefono,correo) values ("GLORIA","123456789","JR ALCAZAR","123456789","MATISI");
+insert into producto (nombre,descripcion,precio,stock,stockMinimo,idProveedor) values ("Kassinma","chocolate hablando webada",2.20,2,2,1);
+SELECT p.*, prov.razonSocial FROM PRODUCTO p INNER JOIN PROVEEDOR prov ON p.idProveedor = prov.idProveedor WHERE idProducto = 0;
