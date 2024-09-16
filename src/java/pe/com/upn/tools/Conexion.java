@@ -14,9 +14,10 @@ public class Conexion {
     
     public Connection conecta()
     {        
+        //COMENTARIO PRUEBA JOMICHI
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3307/cawash";
+            String url = "jdbc:mysql://localhost:3306/cawash";
             String usr = "root";
             String psw = "admin";
             cnx = DriverManager.getConnection(url, usr, psw);
