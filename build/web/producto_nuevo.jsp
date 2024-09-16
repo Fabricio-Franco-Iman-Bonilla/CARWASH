@@ -1,7 +1,9 @@
 
 <form action="ctrlProducto" method="post">
     Codigo <br>
-    <input type="text" class="form-control" name="codigo" style="width: 30%" required> <br>
+    <input type="text" class="form-control" name="id" style="width: 30%" required> <br>
+    Codigo de Proveedor <br>
+    <input type="text" class="form-control" name="idProveedor" style="width: 30%" required> <br>
     Nombre <br>
     <input type="text" class="form-control" name="nombre" style="width: 30%" required> <br>
     Descripcion <br>

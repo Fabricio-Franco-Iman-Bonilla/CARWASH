@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pe.com.upn.tablas.Producto;
+import pe.edu.dao.impl.ProductoImpl;
 
 /**
  *
@@ -26,17 +26,18 @@ public class ctrlProducto extends HttpServlet {
 
        
         boolean log = false;
-        Producto producto = new Producto();
+        ProductoImpl producto = new ProductoImpl();
 
-        String cod = "";
+        int id = -1;
         String nom = "";
         String desc = "";
-        String cant = "";
+        int stock = -1;
+        int idProveedor=-1;
 
         String pag = "";
 
-        if (request.getParameter("codigo") != null) {
-            cod = request.getParameter("codigo");
+        if (request.getParameter("id") != null) {
+            id = Integer.parseInt(request.getParameter("id"));
         }
         if (request.getParameter("nombre") != null) {
             nom = request.getParameter("nombre");
@@ -48,18 +49,28 @@ public class ctrlProducto extends HttpServlet {
             desc = request.getParameter("descripcion");
         }
         if (request.getParameter("cantidad") != null) {
-            cant = request.getParameter("cantidad");
+            stock = Integer.parseInt( request.getParameter("cantidad"));
         }
+        if (request.getParameter("idProveedor") != null) {
+            idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        }
+        
+        producto.setId(id);
+        producto.setNombre(nom);
+        producto.setDescripcion(desc);
+        producto.setStock(stock);
+        producto.setIdProveedor(idProveedor);
+        
 
         if (pag.equals("producto_nuevo")) {
-            producto.nuevo(cod, nom, desc, cant);
+            producto.nuevo(producto);
             response.sendRedirect("dashProd.jsp?pagina=producto_listar");
         } else if (pag.equals("producto_eliminar")) {
-            producto.eliminar(cod);
+            producto.eliminar(String.valueOf(id));
             response.sendRedirect("dashProd.jsp?pagina=producto_listar");
         
         } else if (pag.equals("producto_editar")) {
-            producto.editar(cod, nom, desc, cant);
+            producto.editar(producto);
             response.sendRedirect("dashProd.jsp?pagina=producto_listar");
         }
     }

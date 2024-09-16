@@ -256,7 +256,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
     }
 
-    @Override
+    
     public String obtenerUsuarioIdPorCorreo(String correo) {
 
         String usuarioId = null;
