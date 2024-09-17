@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 
 /**
@@ -68,6 +69,37 @@ public class FuncionesTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         if (result!=expResult)
+            fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarTelefono method, of class Funciones.
+     */
+    @Test
+    public void testValidarTelefono() {    
+        System.out.println("validarTelefono");
+        String numero = "987654321";
+        boolean expResult = true;
+        boolean result = Funciones.validarTelefono(numero);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!= expResult)
+            fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarUsuarioRol method, of class Funciones.
+     */
+    @Test
+    public void testValidarUsuarioRol() {
+        System.out.println("validarUsuarioRol");
+        Usuario usuario = new Usuario();
+        usuario.setUsuario_rol(1);
+        boolean expResult = true;
+        boolean result = Funciones.validarUsuarioRol(usuario);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!= expResult)
             fail("The test case is a prototype.");
     }
 
