@@ -28,21 +28,7 @@ public class FuncionesTest {
     public FuncionesTest() {
     }
 
-    @org.junit.BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @org.junit.AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @org.junit.Before
-    public void setUp() throws Exception {
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-    }
+    
     
     @BeforeClass
     public static void setUpClass() {
@@ -280,6 +266,125 @@ public class FuncionesTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
+    /**
+     * Test of iniciarSesion method, of class Funciones.
+     */
+   @Test
+    public void testIniciarSesion() {
+        System.out.println("Iniciar Sesión con Administrador");
+
+        // Crear instancia de Funciones
+        Funciones instance = new Funciones();
+
+        // Caso 1: Inicio de sesión exitoso con credenciales correctas
+        String usuario1 = "admin";
+        String contraseña1 = "1234";
+        boolean result1 = instance.iniciarSesion(usuario1, contraseña1);
+
+        if (result1) {
+            System.out.println("Caso 1: Inicio de sesión exitoso con credenciales correctas.");
+        } else {
+            fail("Caso 1: El inicio de sesión debería haber sido exitoso con credenciales correctas.");
+        }
+
+        // Caso 2: Inicio de sesión fallido con usuario incorrecto
+        String usuario2 = "usuarioIncorrecto";
+        String contraseña2 = "1234";
+        boolean result2 = instance.iniciarSesion(usuario2, contraseña2);
+
+        if (!result2) {
+            System.out.println("Caso 2: Inicio de sesión fallido con usuario incorrecto, como se esperaba.");
+        } else {
+            fail("Caso 2: El inicio de sesión debería haber fallado con usuario incorrecto.");
+        }
+
+        // Caso 3: Inicio de sesión fallido con contraseña incorrecta
+        String usuario3 = "admin";
+        String contraseña3 = "contraseñaIncorrecta";
+        boolean result3 = instance.iniciarSesion(usuario3, contraseña3);
+
+        if (!result3) {
+            System.out.println("Caso 3: Inicio de sesión fallido con contraseña incorrecta, como se esperaba.");
+        } else {
+            fail("Caso 3: El inicio de sesión debería haber fallado con contraseña incorrecta.");
+        }
+
+        // Caso 4: Inicio de sesión fallido con credenciales vacías
+        String usuario4 = "";
+        String contraseña4 = "";
+        boolean result4 = instance.iniciarSesion(usuario4, contraseña4);
+
+        if (!result4) {
+            System.out.println("Caso 4: Inicio de sesión fallido con credenciales vacías, como se esperaba.");
+        } else {
+            fail("Caso 4: El inicio de sesión debería haber fallado con credenciales vacías.");
+        }
+    }
+
+    /**
+     * Test of validarPlaca method, of class Funciones.
+     */
+    @Test
+    public void testValidarPlaca() {
+        System.out.println("validarPlaca");
+
+        // Caso 1: Placa válida
+        String placaValida = "ABC-123";
+        boolean expResultValida = true;
+        boolean resultValida = Funciones.validarPlaca(placaValida);
+        if (resultValida != expResultValida) {
+            fail("La placa válida no fue aceptada.");
+        }
+
+        // Caso 2: Placa con longitud incorrecta
+        String placaCorta = "AB-123";
+        boolean expResultCorta = false;
+        boolean resultCorta = Funciones.validarPlaca(placaCorta);
+        if (resultCorta != expResultCorta) {
+            fail("La placa con longitud incorrecta fue aceptada.");
+        }
+
+        // Caso 3: Placa sin guion
+        String placaSinGuion = "ABC1234";
+        boolean expResultSinGuion = false;
+        boolean resultSinGuion = Funciones.validarPlaca(placaSinGuion);
+        if (resultSinGuion != expResultSinGuion) {
+            fail("La placa sin guion fue aceptada.");
+        }
+
+        // Caso 4: Placa con caracteres inválidos
+        String placaConSimbolos = "AB@-123";
+        boolean expResultSimbolos = false;
+        boolean resultSimbolos = Funciones.validarPlaca(placaConSimbolos);
+        if (resultSimbolos != expResultSimbolos) {
+            fail("La placa con caracteres inválidos fue aceptada.");
+        }
+
+        // Caso 5: Placa con letras en la sección numérica
+        String placaConLetrasEnNumeros = "ABC-12A";
+        boolean expResultLetrasEnNumeros = false;
+        boolean resultLetrasEnNumeros = Funciones.validarPlaca(placaConLetrasEnNumeros);
+        if (resultLetrasEnNumeros != expResultLetrasEnNumeros) {
+            fail("La placa con letras en la sección numérica fue aceptada.");
+        }
+
+        // Caso 6: Placa con caracteres adicionales
+        String placaConCaracteresAdicionales = "ABCDE-1234";
+        boolean expResultCaracteresAdicionales = false;
+        boolean resultCaracteresAdicionales = Funciones.validarPlaca(placaConCaracteresAdicionales);
+        if (resultCaracteresAdicionales != expResultCaracteresAdicionales) {
+            fail("La placa con caracteres adicionales fue aceptada.");
+        }
+
+        // Caso 7: Placa vacía
+        String placaVacia = "";
+        boolean expResultVacia = false;
+        boolean resultVacia = Funciones.validarPlaca(placaVacia);
+        if (resultVacia != expResultVacia) {
+            fail("La placa vacía fue aceptada.");
+        }
+    }
+
     
 }
