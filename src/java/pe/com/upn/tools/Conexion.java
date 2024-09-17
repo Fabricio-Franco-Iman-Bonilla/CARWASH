@@ -17,9 +17,9 @@ public class Conexion {
         //COMENTARIO PRUEBA JOMICHI
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3307/cawash";
+            String url = "jdbc:mysql://localhost:3309/cawash";
             String usr = "root";
-            String psw = "admin";
+            String psw = "elfackm_1234";
             cnx = DriverManager.getConnection(url, usr, psw);
             return cnx;
         } catch (ClassNotFoundException | SQLException e) {

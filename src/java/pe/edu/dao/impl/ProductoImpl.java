@@ -76,9 +76,32 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     @Override
     public void nuevo(Producto obj) {
         try {
+            // Validaciones previas antes de intentar insertar en la base de datos
+            if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
+                throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
+            }
+
+            if (obj.getStock() < 0) {
+                throw new IllegalArgumentException("El stock no puede ser negativo.");
+            }
+
+            if (obj.getPrecio() <= 0) {
+                throw new IllegalArgumentException("El precio debe ser mayor a 0.");
+            }
+
+            if (obj.getStockMinimo() < 0) {
+                throw new IllegalArgumentException("El stock mínimo no puede ser negativo.");
+            }
+
+            if (obj.getIdProveedor() <= 0) {
+                throw new IllegalArgumentException("El ID del proveedor no puede ser nula");
+            }
+
+            // Conexión y sentencia SQL
             Conexion c = new Conexion();
-            Connection cnx = c.conecta();            
-            String consulta = "insert into producto (nombre,descripcion,precio,stock,stockMinimo,idProveedor)  values(?,?,?,?,?,?);";
+            Connection cnx = c.conecta();
+            String consulta = "INSERT INTO producto (nombre, descripcion, precio, stock, stockMinimo, idProveedor) "
+                            + "VALUES(?, ?, ?, ?, ?, ?);";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, obj.getNombre());
             sentencia.setString(2, obj.getDescripcion());
@@ -86,14 +109,18 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
             sentencia.setInt(4, obj.getStock());
             sentencia.setInt(5, obj.getStockMinimo());
             sentencia.setInt(6, obj.getIdProveedor());
-            
+
             sentencia.executeUpdate();
             sentencia.close();
             cnx.close();
+            System.out.println("Producto creado exitosamente.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al insertar producto: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error en los datos del producto: " + e.getMessage());
         }
     }
+
 
     @Override
     public void eliminar(String id) {
