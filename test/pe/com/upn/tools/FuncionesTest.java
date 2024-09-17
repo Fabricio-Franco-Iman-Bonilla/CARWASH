@@ -238,32 +238,35 @@ public class FuncionesTest {
     //to save again
     //para salvar
 
-    /**
+     /**
      * Test of validarTelefono method, of class Funciones.
      */
-    @org.junit.Test
-    public void testValidarTelefono() {
+    @Test
+    public void testValidarTelefono() {    
         System.out.println("validarTelefono");
-        String numero = "";
-        boolean expResult = false;
+        String numero = "987654321";
+        boolean expResult = true;
         boolean result = Funciones.validarTelefono(numero);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if(result!= expResult)
+            fail("The test case is a prototype.");
     }
 
     /**
      * Test of validarUsuarioRol method, of class Funciones.
      */
-    @org.junit.Test
+    @Test
     public void testValidarUsuarioRol() {
         System.out.println("validarUsuarioRol");
-        Usuario usuario = null;
-        boolean expResult = false;
+        Usuario usuario = new Usuario();
+        usuario.setUsuario_rol(1);
+        boolean expResult = true;
         boolean result = Funciones.validarUsuarioRol(usuario);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        if(result!= expResult)
+            fail("The test case is a prototype.");
     }
 
     /**
