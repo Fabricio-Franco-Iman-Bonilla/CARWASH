@@ -82,4 +82,6 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
+    
+    
 }
