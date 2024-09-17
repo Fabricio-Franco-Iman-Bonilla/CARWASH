@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import pe.com.upn.tools.Conexion;
 
@@ -12,7 +13,7 @@ public class Cita {
 
     private String codigo;
     private String placa;
-    private String fecha;
+    private LocalDateTime horario;
     private String usuario_id;
     private String usuario_nombre;
     private String usuario_apellido;
@@ -36,12 +37,12 @@ public class Cita {
         this.placa = placa;
     }
 
-    public String getFecha() {
-        return fecha;
+    public LocalDateTime getFecha() {
+        return horario;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFecha(LocalDateTime fecha) {
+        this.horario = fecha;
     }
 
     public String getUsuario_id() {
@@ -80,7 +81,7 @@ public class Cita {
                 Cita cit = new Cita();
                 cit.codigo = resultado.getString("codigo_cita");
                 cit.placa = resultado.getString("placa");                
-                cit.fecha = resultado.getString("fecha");
+                cit.horario = LocalDateTime.parse(resultado.getString("fecha"));
                 cit.usuario_id = resultado.getString("usuario_id");
                 lista.add(cit);
             }  
@@ -124,7 +125,7 @@ public class Cita {
             resultado.next();
             ct.codigo = resultado.getString("codigo_cita");
             ct.placa = resultado.getString("placa");
-            ct.fecha = resultado.getString("fecha");
+            ct.horario = LocalDateTime.parse(resultado.getString("fecha"));
             ct.usuario_id = resultado.getString("usuario_id");
             sentencia.close();
             cnx.close();
@@ -189,7 +190,7 @@ public class Cita {
             Cita cit = new Cita();
             cit.codigo = resultado.getString("codigo_cita");
             cit.placa = resultado.getString("placa");
-            cit.fecha = resultado.getString("fecha");
+            cit.horario = LocalDateTime.parse(resultado.getString("fecha"));
             cit.usuario_id = resultado.getString("usuario_id");
             cit.usuario_nombre = resultado.getString("usuario_nombre");
             cit.usuario_apellido = resultado.getString("usuario_apellido");
@@ -230,7 +231,7 @@ public class Cita {
             Cita cit = new Cita();
             
             cit.placa = resultado.getString("placa");
-            cit.fecha = resultado.getString("fecha");
+            cit.horario = LocalDateTime.parse(resultado.getString("fecha"));
             cit.usuario_id = resultado.getString("usuario_id");
             cit.usuario_nombre = resultado.getString("usuario_nombre");
             cit.usuario_apellido = resultado.getString("usuario_apellido");
