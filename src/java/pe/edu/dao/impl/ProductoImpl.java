@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import pe.com.upn.tools.Conexion;
+import pe.com.upn.tools.Funciones;
 import pe.edu.dao.DAO;
 import pe.edu.dao.entity.Producto;
 
@@ -20,18 +21,21 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     }
     
     @Override
-    public Producto ver(String prd) {
+    public Producto ver(String id) {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "Select * from productos where codigo_producto='" + prd + "';";
+            String consulta = "Select * from producto where idProducto='" + id + "';";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);            
             resultado.next();
-            this.codigo = resultado.getString("codigo_producto");
-            this.nombre = resultado.getString("nombre_producto");
-            this.descripcion = resultado.getString("descripcion_producto");
-            this.cantidad = resultado.getString("cantidad_producto");
+            this.id = resultado.getInt("idProducto");
+            this.nombre=resultado.getString("nombre");
+            this.descripcion=(resultado.getString("descripcion"));
+            this.precio = resultado.getFloat("precio");
+            this.stock = resultado.getInt("stock");
+            this.stockMinimo = resultado.getInt("stockMinimo");
+            this.idProveedor = resultado.getInt("idProveedor");
             sentencia.close();
             cnx.close();            
         } catch (SQLException e) {
@@ -45,16 +49,20 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "Select * from productos ";
+            String consulta = "Select * from producto";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
             LinkedList<Producto> lista = new LinkedList<>();            
             while(resultado.next()) {
                 Producto pro = new Producto();
-                pro.setCodigo(resultado.getString("codigo_producto"));
-                pro.setNombre(resultado.getString("nombre_producto"));
-                pro.setDescripcion(resultado.getString("descripcion_producto"));
-                pro.setCantidad(resultado.getString("cantidad_producto"));
+                pro.setId(resultado.getInt("idProducto"));
+                pro.setNombre(resultado.getString("nombre"));
+                pro.setDescripcion(resultado.getString("descripcion"));
+                pro.setPrecio(resultado.getFloat("precio"));
+                pro.setStock(resultado.getInt("stock"));
+                pro.setStockMinimo(resultado.getInt("stockMinimo"));
+                pro.setIdProveedor(resultado.getInt("idProveedor"));
+                
                 lista.add(pro);
             }  
             sentencia.close();
@@ -69,28 +77,40 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     @Override
     public void nuevo(Producto obj) {
         try {
+            /*validado*/
+            Funciones.validarProducto(obj);
+
+            // Conexión y sentencia SQL
             Conexion c = new Conexion();
-            Connection cnx = c.conecta();            
-            String consulta = "insert into productos values(?,?,?,?);";
+            Connection cnx = c.conecta();
+            String consulta = "INSERT INTO producto (nombre, descripcion, precio, stock, stockMinimo, idProveedor) "
+                            + "VALUES(?, ?, ?, ?, ?, ?);";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
-            sentencia.setString(1, obj.getCodigo());
-            sentencia.setString(2, obj.getNombre());
-            sentencia.setString(3, obj.getDescripcion());
-            sentencia.setString(4, obj.getCantidad());
+            sentencia.setString(1, obj.getNombre());
+            sentencia.setString(2, obj.getDescripcion());
+            sentencia.setFloat(3, obj.getPrecio());
+            sentencia.setInt(4, obj.getStock());
+            sentencia.setInt(5, obj.getStockMinimo());
+            sentencia.setInt(6, obj.getIdProveedor());
+
             sentencia.executeUpdate();
             sentencia.close();
             cnx.close();
+            System.out.println("Producto creado exitosamente.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al insertar producto: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error en los datos del producto: " + e.getMessage());
         }
     }
+
 
     @Override
     public void eliminar(String id) {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "delete from productos where codigo_producto=?;";
+            String consulta = "delete from producto where idProducto=?;";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, id);
             sentencia.executeUpdate();
@@ -106,14 +126,15 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "update productos ";
-            consulta += "set nombre_producto=?, descripcion_producto=?, ";
-            consulta += "cantidad_producto=? where codigo_producto=?";
+            String consulta = "UPDATE PRODUCTO SET nombre = ?, descripcion = ?, precio = ?, stock = ?,stockMinimo=?, idProveedor = ? WHERE idProducto = ?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, obj.getNombre());            
             sentencia.setString(2, obj.getDescripcion());
-            sentencia.setString(3, obj.getCantidad());
-            sentencia.setString(4, obj.getCodigo());            
+            sentencia.setFloat(3, obj.getPrecio());
+            sentencia.setInt(4, obj.getStock());     
+            sentencia.setInt(5, obj.getStockMinimo()); 
+            sentencia.setInt(6, obj.getIdProveedor()); 
+            sentencia.setInt(7, obj.getId()); 
             sentencia.executeUpdate();
             sentencia.close();
             cnx.close();
@@ -122,9 +143,6 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         }
     }
 
-    @Override
-    public String obtenerUsuarioIdPorCorreo(String correo) {
-        return null;
-    }
+   
     
 }

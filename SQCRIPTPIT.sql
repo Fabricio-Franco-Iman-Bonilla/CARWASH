@@ -21,6 +21,7 @@ CREATE TABLE CITA
     idCita            INT  NOT NULL PRIMARY KEY auto_increment,
     promocion         VARCHAR(50)  NULL,
     estado            VARCHAR(20)  NULL,
+    horario				datetime,
     idUsuario         INT  NULL,
     idPersona         INT  NULL,
     idVehiculo        INT  NULL

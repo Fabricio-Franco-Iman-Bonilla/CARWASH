@@ -30,7 +30,7 @@
         %>        
         <tr>
             <td>
-                <%= ux.getCodigo()%>
+                <%= ux.getId()%>
             </td>
             <td>
                 <%= ux.getNombre()%>
@@ -39,11 +39,11 @@
                 <%= ux.getDescripcion()%>
             </td>
             <td>
-                <%= ux.getCantidad()%>
+                <%= ux.getStock()%>
             </td>
-            <td><a href="dashProd.jsp?pagina=producto_ver&producto=<%= ux.getCodigo()%>" class="btn btn-info" style="width: 80px">ver</a></td>
-            <td><a href="dashProd.jsp?pagina=producto_editar&producto=<%= ux.getCodigo()%>" class="btn btn-warning" style="width: 80px">Editar</a></td>
-            <td><a href="dashProd.jsp?pagina=producto_eliminar&producto=<%= ux.getCodigo()%>" class="btn btn-danger" style="width: 80px">Eliminar</a></td>
+            <td><a href="dashProd.jsp?pagina=producto_ver&producto=<%= ux.getId()%>" class="btn btn-info" style="width: 80px">ver</a></td>
+            <td><a href="dashProd.jsp?pagina=producto_editar&producto=<%= ux.getId()%>" class="btn btn-warning" style="width: 80px">Editar</a></td>
+            <td><a href="dashProd.jsp?pagina=producto_eliminar&producto=<%= ux.getId()%>" class="btn btn-danger" style="width: 80px">Eliminar</a></td>
         </tr>
         <%
             }

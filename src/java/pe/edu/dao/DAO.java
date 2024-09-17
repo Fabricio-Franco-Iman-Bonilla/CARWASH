@@ -14,6 +14,5 @@ public interface DAO<T> {
     public void nuevo(T obj);
     public void eliminar(String id);
     public void editar(T obj);
-    public String obtenerUsuarioIdPorCorreo(String correo);
     
 }

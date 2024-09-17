@@ -3,8 +3,41 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/INGLES/CICLOVIII/CALIDAD/CARWASH/src/java/pe/com/upn/tablas/Cita.java</file>
             <file>file:/D:/INGLES/CICLOVIII/CALIDAD/CARWASH/src/java/pe/com/upn/tablas/Producto.java</file>
+=======
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/dao/DAO.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/producto_eliminar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/producto_ver.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/dao/impl/UsuarioImpl.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/usuario_editar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/com/upn/tools/Conexion.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/cita_editar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/login.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/swad/controller/ctrlProducto.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/dao/impl/ProductoImpl.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/com/upn/tablas/Cita.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/cita_listarCliente.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/usuario_listar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/dashboard.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/usuario_nuevo.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/usuario_ver.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/com/upn/tools/Autentica.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/swad/controller/ctrlCita.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/test/pe/com/upn/tools/FuncionesTest.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/dao/entity/Usuario.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/producto_nuevo.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/dashCliente.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/dao/entity/Producto.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/swad/controller/ctrlPago.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/cita_nuevoCliente.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/src/java/pe/edu/swad/controller/ctrlUsuario.java</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/usuario_eliminar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/producto_editar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/producto_listar.jsp</file>
+            <file>file:/C:/Users/Franzuá/OneDrive/Escritorio/Cursitos%20UPN/CALIDAD%20Y%20PRUEBAS/CarWash-develop/web/indexCliente.jsp</file>
+>>>>>>> 1772b5b622ec767f49e4e81e509ee52b54514ec7
         </group>
     </open-files>
 </project-private>

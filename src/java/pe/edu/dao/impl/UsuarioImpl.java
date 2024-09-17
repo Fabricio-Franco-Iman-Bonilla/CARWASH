@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import pe.com.upn.tools.Conexion;
+import pe.com.upn.tools.Funciones;
 import pe.edu.dao.DAO;
 import pe.edu.dao.entity.Usuario;
 
@@ -63,6 +64,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
                 usr.setUsuario_telefono(resultado.getString("telefono"));
                 usr.setUsuario_password(resultado.getString("contrasena"));
                 usr.setUsuario_rol(resultado.getInt("ROL"));
+                usr.setUsuario_usuario(resultado.getString("usuario"));
                 lista.add(usr);
             }
             sentencia.close();
@@ -79,6 +81,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         Connection cnx = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        Funciones.esNombreUsuarioUnico(obj.getUsuario_usuario());
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
@@ -256,7 +259,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
     }
 
-    @Override
+    
     public String obtenerUsuarioIdPorCorreo(String correo) {
 
         String usuarioId = null;
