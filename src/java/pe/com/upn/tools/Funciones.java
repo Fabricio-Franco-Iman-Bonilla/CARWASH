@@ -6,6 +6,7 @@ package pe.com.upn.tools;
 
 import java.util.LinkedList;
 import java.util.List;
+import pe.edu.dao.entity.Producto;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 
@@ -82,6 +83,27 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
-    
+    public static void validarProducto(Producto obj) throws IllegalArgumentException {
+        if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
+        }
+
+        if (obj.getStock() < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo.");
+        }
+
+        if (obj.getPrecio() <= 0) {
+            throw new IllegalArgumentException("El precio debe ser mayor a 0.");
+        }
+
+        if (obj.getStockMinimo() < 0) {
+            throw new IllegalArgumentException("El stock mínimo no puede ser negativo.");
+        }
+
+        if (obj.getIdProveedor() <= 0) {
+            throw new IllegalArgumentException("El ID del proveedor no puede ser nulo.");
+        }
+    }
+
     
 }
