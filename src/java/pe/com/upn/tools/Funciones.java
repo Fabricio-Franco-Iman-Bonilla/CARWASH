@@ -83,6 +83,7 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
+<<<<<<< HEAD
     public static void validarProducto(Producto obj) throws IllegalArgumentException {
         if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -104,5 +105,8 @@ public class Funciones {
             throw new IllegalArgumentException("El ID del proveedor no puede ser nulo.");
         }
     }
+=======
+    
+>>>>>>> 0c0e93c21c6356ea12f6b542928c01b429f402f7
     
 }
