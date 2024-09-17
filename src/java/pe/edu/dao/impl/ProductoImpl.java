@@ -77,7 +77,7 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     @Override
     public void nuevo(Producto obj) {
         try {
-            
+            /*validado*/
             Funciones.validarProducto(obj);
 
             // Conexión y sentencia SQL
