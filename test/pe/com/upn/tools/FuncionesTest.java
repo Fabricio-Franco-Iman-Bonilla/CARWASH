@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import pe.edu.dao.entity.Producto;
 import pe.edu.dao.impl.ProductoImpl;
+import pe.edu.dao.entity.*;
 import pe.edu.dao.impl.UsuarioImpl;
 
 /**
