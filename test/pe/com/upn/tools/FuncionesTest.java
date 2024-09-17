@@ -4,18 +4,17 @@
  */
 package pe.com.upn.tools;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import pe.com.upn.tablas.Cita;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
 import pe.edu.dao.impl.ProductoImpl;
-import pe.edu.dao.entity.*;
-import pe.edu.dao.impl.UsuarioImpl;
 
 /**
  *
@@ -23,12 +22,11 @@ import pe.edu.dao.impl.UsuarioImpl;
  */
 public class FuncionesTest {
     
-    private ProductoImpl productoImpl;
+    ProductoImpl productoImpl;
     
     public FuncionesTest() {
     }
 
-    
     
     @BeforeClass
     public static void setUpClass() {
@@ -267,6 +265,102 @@ public class FuncionesTest {
         fail("The test case is a prototype.");
     }
 
+    
+    //DE PAPI YAURI
+    /**
+     * Test of verificarCitasAgendadas method, of class Funciones.
+     */
+    @Test
+    public void testVerificarCitasAgendadas() {
+        System.out.println("verificarCitasAgendadas");
+        Cita cita1 =new Cita();
+        Cita cita2= new Cita();
+        Cita cita3= new Cita();
+        cita1.setFecha(LocalDateTime.of(2024, 9, 20, 10, 0));
+        cita2.setFecha(LocalDateTime.of(2024, 9, 20, 10, 0));
+        cita3.setFecha(LocalDateTime.of(2024, 9, 20, 11, 0));
+        
+        Cita[] citas = {cita1,cita2,cita3};
+        LocalDateTime nuevoHorario = LocalDateTime.of(2024, 9, 20, 11, 0);
+        boolean expResult = true;
+        boolean result = Funciones.verificarCitasAgendadas(citas, nuevoHorario);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(expResult!=result)
+            fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of verificarExistenciaProveedor method, of class Funciones.
+     */
+    @Test
+    public void testVerificarExistenciaProveedor() throws Exception {
+        System.out.println("verificarExistenciaProveedor");
+        //SOLO EXISTE 1 QUE ES GLORIA
+        int idProveedor = 2;
+        boolean expResult = true;
+        boolean result = Funciones.verificarExistenciaProveedor(idProveedor);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!=expResult)
+            fail("The test case is a prototype.");
+    }
+
+    
+    //DE HANZEL PANZEL
+    /**
+     * Test of validarPrecio method, of class Funciones.
+     */
+    @Test
+    public void testValidarPrecio() {
+        //SOLO DEBE TENER 2 DECIMALES
+        System.out.println("validarPrecio");
+        double precio = 5.71;
+        Funciones instance = new Funciones();
+        boolean expResult = true;
+        boolean result = instance.validarPrecio(precio);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!=expResult)
+            fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of esStockValido method, of class Funciones.
+     */
+    @Test
+    public void testEsStockValido() {
+        System.out.println("esStockValido");
+        int stock = 324;
+        Funciones instance = new Funciones();
+        boolean expResult = true;
+        boolean result = instance.esStockValido(stock);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!=expResult)
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarFormatoCorreo method, of class Funciones.
+     */
+    @Test
+    public void testValidarFormatoCorreo() {
+        System.out.println("validarFormatoCorreo");
+        String correo = "ssdsa@dsa.pe";
+        boolean expResult = true;
+        boolean result = Funciones.validarFormatoCorreo(correo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        if(result!=expResult)
+        fail("The test case is a prototype.");
+    }
+    
+    
+    
+    
+    
+    
     /**
      * Test of iniciarSesion method, of class Funciones.
      */

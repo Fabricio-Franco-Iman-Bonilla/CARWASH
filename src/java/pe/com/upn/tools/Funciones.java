@@ -4,8 +4,16 @@
  */
 package pe.com.upn.tools;
 
+import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import pe.com.upn.tablas.Cita;
+import java.sql.ResultSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import pe.edu.dao.entity.Producto;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
@@ -135,6 +143,80 @@ public class Funciones {
         }
     }
     
+    
+     public static boolean verificarCitasAgendadas(Cita[] citas, LocalDateTime nuevoHorario) {
+        int count = 0;
+
+        for (Cita cita : citas) {
+            // Comparar el nuevo horario con los horarios ya agendados
+            if (cita.getFecha().equals(nuevoHorario)) {
+                count++;
+            }
+        }
+        // Permitir máximo 2 citas en el mismo horario
+        return count < 2;
+    }
+    
+    // Función para verificar si un proveedor existe en la base de datos
+    public static boolean verificarExistenciaProveedor( int idProveedor) throws SQLException {
+        Conexion c = new Conexion();
+        Connection cnx = c.conecta();
+        String query = "SELECT COUNT(*) FROM Proveedor WHERE idProveedor = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(query)) {
+            statement.setInt(1, idProveedor);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;  // Retorna true si el proveedor existe
+                }
+            }
+        }
+        return false;
+    }
+    
+     // Método para validar precios
+    public boolean validarPrecio(double precio) {
+        // El precio debe ser positivo
+        if (precio <= 0) {
+            return false;
+        }
+        // El precio debe tener máximo dos decimales
+        if (Math.round(precio * 500.0) / 500.0 != precio) {
+            return false;
+        }
+        return true;
+    }
+    
+    // Método para validar el stock
+    public boolean esStockValido(int stock) {
+        // El stock debe ser mayor o igual a 0
+        if (stock < 0) {
+            return false;
+        }
+        // Cambia el límite máximo de stock de 1200
+        if (stock > 1200) {
+            return false;
+        }
+        return true;
+    }
+    
+    // Función para validar el formato del correo electrónico
+    public static boolean validarFormatoCorreo(String correo) {
+        // Expresión regular para validar un correo electrónico
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        
+        // Compilamos la expresión regular en un patrón
+        Pattern pattern = Pattern.compile(regex);
+        
+        // Comparamos el correo con el patrón
+        Matcher matcher = pattern.matcher(correo);
+        
+        // Retornamos true si el correo coincide con el formato
+        return matcher.matches();
+    }
+    
+    
+
     public boolean iniciarSesion(String usuario, String contraseña) {
         return USUARIO_ADMIN.equals(usuario) && PASSWORD_ADMIN.equals(contraseña);
     }
