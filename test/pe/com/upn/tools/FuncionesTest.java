@@ -7,7 +7,6 @@ package pe.com.upn.tools;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.After;
-import pe.edu.dao.DAO;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -91,7 +90,7 @@ public class FuncionesTest {
             producto.setStock(5);
             producto.setStockMinimo(1);
             producto.setIdProveedor(1);
-            ProductoImpl.nuevo(producto);  // Debería funcionar sin lanzar excepciones
+            productoImpl.nuevo(producto);  // Debería funcionar sin lanzar excepciones
             System.out.println("Producto creado correctamente con nombre válido.");
         } catch (Exception e) {
             fail("No debería lanzar una excepción con datos válidos.");
