@@ -11,11 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-<<<<<<< HEAD
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
-=======
->>>>>>> 9f58b9c1aa5396483825f4b0e3bd78ce1296ef55
 import pe.edu.dao.impl.ProductoImpl;
 import pe.edu.dao.entity.*;
 import pe.edu.dao.impl.UsuarioImpl;
@@ -29,6 +26,22 @@ public class FuncionesTest {
     private ProductoImpl productoImpl;
     
     public FuncionesTest() {
+    }
+
+    @org.junit.BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @org.junit.AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    @org.junit.Before
+    public void setUp() throws Exception {
+    }
+
+    @org.junit.After
+    public void tearDown() throws Exception {
     }
     
     @BeforeClass
@@ -224,6 +237,46 @@ public class FuncionesTest {
     
     //to save again
     //para salvar
+
+    /**
+     * Test of validarTelefono method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarTelefono() {
+        System.out.println("validarTelefono");
+        String numero = "";
+        boolean expResult = false;
+        boolean result = Funciones.validarTelefono(numero);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarUsuarioRol method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarUsuarioRol() {
+        System.out.println("validarUsuarioRol");
+        Usuario usuario = null;
+        boolean expResult = false;
+        boolean result = Funciones.validarUsuarioRol(usuario);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarProducto method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarProducto() {
+        System.out.println("validarProducto");
+        Producto obj = null;
+        Funciones.validarProducto(obj);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
     
     
 }

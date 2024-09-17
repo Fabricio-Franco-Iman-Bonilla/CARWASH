@@ -83,7 +83,7 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
-<<<<<<< HEAD
+
     
     public static boolean validarTelefono(String numero){
         char primerDigito = numero.charAt(0);
@@ -111,7 +111,6 @@ public class Funciones {
             return false;
         }
     }
-=======
     public static void validarProducto(Producto obj) throws IllegalArgumentException {
         if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -134,6 +133,5 @@ public class Funciones {
         }
     }
 
-    
->>>>>>> 9f58b9c1aa5396483825f4b0e3bd78ce1296ef55
+   
 }
