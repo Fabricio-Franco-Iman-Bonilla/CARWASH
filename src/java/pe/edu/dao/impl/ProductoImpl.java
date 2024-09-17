@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import pe.com.upn.tools.Conexion;
+import pe.com.upn.tools.Funciones;
 import pe.edu.dao.DAO;
 import pe.edu.dao.entity.Producto;
 
@@ -76,9 +77,14 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     @Override
     public void nuevo(Producto obj) {
         try {
+            /*validado*/
+            Funciones.validarProducto(obj);
+
+            // Conexión y sentencia SQL
             Conexion c = new Conexion();
-            Connection cnx = c.conecta();            
-            String consulta = "insert into producto (nombre,descripcion,precio,stock,stockMinimo,idProveedor)  values(?,?,?,?,?,?);";
+            Connection cnx = c.conecta();
+            String consulta = "INSERT INTO producto (nombre, descripcion, precio, stock, stockMinimo, idProveedor) "
+                            + "VALUES(?, ?, ?, ?, ?, ?);";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, obj.getNombre());
             sentencia.setString(2, obj.getDescripcion());
@@ -86,14 +92,18 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
             sentencia.setInt(4, obj.getStock());
             sentencia.setInt(5, obj.getStockMinimo());
             sentencia.setInt(6, obj.getIdProveedor());
-            
+
             sentencia.executeUpdate();
             sentencia.close();
             cnx.close();
+            System.out.println("Producto creado exitosamente.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al insertar producto: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error en los datos del producto: " + e.getMessage());
         }
     }
+
 
     @Override
     public void eliminar(String id) {

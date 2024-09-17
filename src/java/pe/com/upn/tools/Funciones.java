@@ -5,6 +5,11 @@
 package pe.com.upn.tools;
 
 import java.util.LinkedList;
+<<<<<<< HEAD
+=======
+import java.util.List;
+import pe.edu.dao.entity.Producto;
+>>>>>>> 82ad36e94b5cb1e69017b2c71706379015974a4a
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 
@@ -81,4 +86,55 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
+
+    
+    public static boolean validarTelefono(String numero){
+        char primerDigito = numero.charAt(0);
+        if(primerDigito == '9'){
+            if(numero.length()== 9){
+                return true;
+            }
+            else{
+                System.out.println("El número de teléfono debe contener 9 dígitos.");
+                return false;
+            }
+        }
+        else{
+            System.out.println("El primer dígito del número de teléfono debe ser 9.");
+            return false;
+        }
+    }
+    
+    public static boolean validarUsuarioRol(Usuario usuario){
+        int rol = usuario.getUsuario_rol();
+        if(rol == 1 || rol == 2)
+            return true;
+        else{
+            System.out.println("El usuario no tiene rol");
+            return false;
+        }
+    }
+    public static void validarProducto(Producto obj) throws IllegalArgumentException {
+        if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
+        }
+
+        if (obj.getStock() < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo.");
+        }
+
+        if (obj.getPrecio() <= 0) {
+            throw new IllegalArgumentException("El precio debe ser mayor a 0.");
+        }
+
+        if (obj.getStockMinimo() < 0) {
+            throw new IllegalArgumentException("El stock mínimo no puede ser negativo.");
+        }
+
+        if (obj.getIdProveedor() <= 0) {
+            throw new IllegalArgumentException("El ID del proveedor no puede ser nulo.");
+        }
+    }
+
+   
 }
