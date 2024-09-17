@@ -5,7 +5,6 @@
 package pe.com.upn.tools;
 
 import java.util.LinkedList;
-import java.util.List;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 
