@@ -27,22 +27,6 @@ public class FuncionesTest {
     
     public FuncionesTest() {
     }
-
-    @org.junit.BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @org.junit.AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @org.junit.Before
-    public void setUp() throws Exception {
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-    }
     
     @BeforeClass
     public static void setUpClass() {
