@@ -5,8 +5,11 @@
 package pe.com.upn.tools;
 
 import java.util.LinkedList;
+<<<<<<< HEAD
+=======
 import java.util.List;
 import pe.edu.dao.entity.Producto;
+>>>>>>> 82ad36e94b5cb1e69017b2c71706379015974a4a
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 
