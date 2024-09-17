@@ -5,7 +5,6 @@
 package pe.com.upn.tools;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,8 +14,6 @@ import static org.junit.Assert.*;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
 import pe.edu.dao.impl.ProductoImpl;
-import pe.edu.dao.entity.*;
-import pe.edu.dao.impl.UsuarioImpl;
 
 /**
  *
