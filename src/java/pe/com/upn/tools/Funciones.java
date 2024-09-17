@@ -20,10 +20,12 @@ import pe.edu.dao.impl.UsuarioImpl;
 
 /**
  *
- * @author Franzuá
+ * @author Piero
  */
 public class Funciones {
-
+    private static final String USUARIO_ADMIN = "admin";
+    private static final String PASSWORD_ADMIN = "1234";
+    
     public static boolean validarContrasena(String contrasena) {
         // Aquí definimos las Reglas de validación
         int longitudMinima = 8;
@@ -141,6 +143,7 @@ public class Funciones {
         }
     }
     
+    
      public static boolean verificarCitasAgendadas(Cita[] citas, LocalDateTime nuevoHorario) {
         int count = 0;
 
@@ -214,5 +217,35 @@ public class Funciones {
     
     
 
+    public boolean iniciarSesion(String usuario, String contraseña) {
+        return USUARIO_ADMIN.equals(usuario) && PASSWORD_ADMIN.equals(contraseña);
+    }
+    
+    public static boolean validarPlaca(String placa) {
+        // Verificar que la longitud sea de exactamente 7 caracteres
+        if (placa.length() != 7) {
+            return false;
+        }
+
+        // Verificar los primeros 3 caracteres (alfanuméricos)
+        String primerosTres = placa.substring(0, 3);
+        if (!primerosTres.matches("[a-zA-Z0-9]{3}")) {
+            return false;
+        }
+
+        // Verificar el carácter en la posición 4 (guion)
+        if (placa.charAt(3) != '-') {
+            return false;
+        }
+
+        // Verificar los últimos 3 caracteres (numéricos)
+        String ultimosTres = placa.substring(4);
+        if (!ultimosTres.matches("\\d{3}")) {
+            return false;
+        }
+
+        // Si todas las condiciones se cumplen, la placa es válida
+        return true;
+    }
    
 }
