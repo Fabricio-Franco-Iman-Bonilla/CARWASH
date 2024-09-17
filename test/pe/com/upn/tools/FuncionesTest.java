@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import pe.com.upn.tablas.Cita;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
 import pe.edu.dao.impl.ProductoImpl;
