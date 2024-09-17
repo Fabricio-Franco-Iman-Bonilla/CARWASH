@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import pe.edu.dao.entity.Usuario;
+import pe.edu.dao.entity.Producto;
 import pe.edu.dao.impl.ProductoImpl;
 import pe.edu.dao.entity.*;
 import pe.edu.dao.impl.UsuarioImpl;
@@ -24,6 +26,22 @@ public class FuncionesTest {
     private ProductoImpl productoImpl;
     
     public FuncionesTest() {
+    }
+
+    @org.junit.BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @org.junit.AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    @org.junit.Before
+    public void setUp() throws Exception {
+    }
+
+    @org.junit.After
+    public void tearDown() throws Exception {
     }
     
     @BeforeClass
@@ -56,9 +74,6 @@ public class FuncionesTest {
         // TODO review the generated test code and remove the default call to fail.
         if (result!=expResult)
             fail("The test case is a prototype.");
-            
-        
-        
     }
 
     /**
@@ -89,7 +104,6 @@ public class FuncionesTest {
             producto.setStock(5);
             producto.setStockMinimo(1);
             producto.setIdProveedor(1);
-
             productoImpl.nuevo(producto);  // Debería funcionar sin lanzar excepciones
             System.out.println("Producto creado correctamente con nombre válido.");
         } catch (Exception e) {
@@ -99,7 +113,6 @@ public class FuncionesTest {
         /*
         // Caso con error: Nombre vacío
         try {
-            
             producto.setNombre(""); // Nombre vacío para generar error
             producto.setDescripcion("Descripción válida");
             producto.setPrecio(10.0f);
@@ -117,7 +130,6 @@ public class FuncionesTest {
     @Test
     public void testStockNegativo() {
         Producto producto = new Producto();
-
         // Caso válido
         /*
         try {
@@ -148,7 +160,6 @@ public class FuncionesTest {
             System.out.println("Excepción capturada correctamente: " + e.getMessage());
             assertEquals("El stock no puede ser negativo.", e.getMessage());
         }
-        
     }
 
     @Test
@@ -221,10 +232,51 @@ public class FuncionesTest {
             assertEquals("El ID del proveedor debe ser mayor a 0.", e.getMessage());
         }*/
     }
+   
     
     
     //to save again
     //para salvar
+
+    /**
+     * Test of validarTelefono method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarTelefono() {
+        System.out.println("validarTelefono");
+        String numero = "";
+        boolean expResult = false;
+        boolean result = Funciones.validarTelefono(numero);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarUsuarioRol method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarUsuarioRol() {
+        System.out.println("validarUsuarioRol");
+        Usuario usuario = null;
+        boolean expResult = false;
+        boolean result = Funciones.validarUsuarioRol(usuario);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of validarProducto method, of class Funciones.
+     */
+    @org.junit.Test
+    public void testValidarProducto() {
+        System.out.println("validarProducto");
+        Producto obj = null;
+        Funciones.validarProducto(obj);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
     
     
 }

@@ -83,6 +83,34 @@ public class Funciones {
         }
         return true; // El nombre de usuario es único
     }
+
+    
+    public static boolean validarTelefono(String numero){
+        char primerDigito = numero.charAt(0);
+        if(primerDigito == '9'){
+            if(numero.length()== 9){
+                return true;
+            }
+            else{
+                System.out.println("El número de teléfono debe contener 9 dígitos.");
+                return false;
+            }
+        }
+        else{
+            System.out.println("El primer dígito del número de teléfono debe ser 9.");
+            return false;
+        }
+    }
+    
+    public static boolean validarUsuarioRol(Usuario usuario){
+        int rol = usuario.getUsuario_rol();
+        if(rol == 1 || rol == 2)
+            return true;
+        else{
+            System.out.println("El usuario no tiene rol");
+            return false;
+        }
+    }
     public static void validarProducto(Producto obj) throws IllegalArgumentException {
         if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -105,5 +133,5 @@ public class Funciones {
         }
     }
 
-    
+   
 }
