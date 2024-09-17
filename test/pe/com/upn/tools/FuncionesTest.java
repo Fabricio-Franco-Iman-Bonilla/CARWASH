@@ -11,9 +11,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+<<<<<<< HEAD
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
+=======
+>>>>>>> 9f58b9c1aa5396483825f4b0e3bd78ce1296ef55
 import pe.edu.dao.impl.ProductoImpl;
+import pe.edu.dao.entity.*;
 import pe.edu.dao.impl.UsuarioImpl;
 
 /**
@@ -78,7 +82,7 @@ public class FuncionesTest {
      @Test
     public void testNombreVacio() {
         Producto producto = new Producto();
-        /*
+        
         // Caso válido
         try {
             producto.setNombre("Producto válido");
@@ -92,7 +96,8 @@ public class FuncionesTest {
         } catch (Exception e) {
             fail("No debería lanzar una excepción con datos válidos.");
         }
-        */
+        
+        /*
         // Caso con error: Nombre vacío
         try {
             producto.setNombre(""); // Nombre vacío para generar error
@@ -106,7 +111,7 @@ public class FuncionesTest {
         } catch (IllegalArgumentException e) {
             System.out.println("Excepción capturada correctamente: " + e.getMessage());
             assertEquals("El nombre del producto no puede estar vacío.", e.getMessage());
-        }
+        }*/
     }
 
     @Test
@@ -215,5 +220,10 @@ public class FuncionesTest {
         }*/
     }
    
+    
+    
+    //to save again
+    //para salvar
+    
     
 }

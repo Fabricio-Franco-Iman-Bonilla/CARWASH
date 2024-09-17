@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import pe.com.upn.tools.Conexion;
+import pe.com.upn.tools.Funciones;
 import pe.edu.dao.DAO;
 import pe.edu.dao.entity.Producto;
 
@@ -76,26 +77,8 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
     @Override
     public void nuevo(Producto obj) {
         try {
-            // Validaciones previas antes de intentar insertar en la base de datos
-            if (obj.getNombre() == null || obj.getNombre().isEmpty()) {
-                throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
-            }
-
-            if (obj.getStock() < 0) {
-                throw new IllegalArgumentException("El stock no puede ser negativo.");
-            }
-
-            if (obj.getPrecio() <= 0) {
-                throw new IllegalArgumentException("El precio debe ser mayor a 0.");
-            }
-
-            if (obj.getStockMinimo() < 0) {
-                throw new IllegalArgumentException("El stock mínimo no puede ser negativo.");
-            }
-
-            if (obj.getIdProveedor() <= 0) {
-                throw new IllegalArgumentException("El ID del proveedor no puede ser nula");
-            }
+            /*validado*/
+            Funciones.validarProducto(obj);
 
             // Conexión y sentencia SQL
             Conexion c = new Conexion();
