@@ -16,6 +16,7 @@ import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * º
@@ -80,7 +81,9 @@ public class ctrlUsuario extends HttpServlet {
         }
         
         // Obtener la IP desde la solicitud
-        String ipAddress = usuario.obtenerDireccionIp(request);
+        String ipAddress;
+        ipAddress=usuario.obtenerIpPublica();
+       
 
         Hash h = new Hash();
         contra = h.StringToHash(contra, "SHA-256");
