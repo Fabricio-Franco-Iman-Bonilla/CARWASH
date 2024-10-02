@@ -51,7 +51,7 @@ public class FuncionesTest {
     @Test
     public void testValidarContrasena() {
         System.out.println("validarContrasena");
-        String contrasena = "Abc1233$";
+        String contrasena = "Abc$";
         boolean expResult = true;
         boolean result = Funciones.validarContrasena(contrasena);
         assertEquals(expResult, result);
@@ -66,7 +66,7 @@ public class FuncionesTest {
     @Test
     public void testEsNombreUsuarioUnico() {
         System.out.println("esNombreUsuarioUnico");
-        String nombreUsuario = "tokiro";
+        String nombreUsuario = "admin";
         boolean expResult = true;
         boolean result = Funciones.esNombreUsuarioUnico(nombreUsuario);
         assertEquals(expResult, result);
@@ -79,7 +79,7 @@ public class FuncionesTest {
      @Test
     public void testNombreVacio() {
         Producto producto = new Producto();
-        
+        /*
         // Caso válido
         try {
             producto.setNombre("Producto válido");
@@ -93,8 +93,8 @@ public class FuncionesTest {
         } catch (Exception e) {
             fail("No debería lanzar una excepción con datos válidos.");
         }
+        */
         
-        /*
         // Caso con error: Nombre vacío
         try {
             producto.setNombre(""); // Nombre vacío para generar error
@@ -108,7 +108,7 @@ public class FuncionesTest {
         } catch (IllegalArgumentException e) {
             System.out.println("Excepción capturada correctamente: " + e.getMessage());
             assertEquals("El nombre del producto no puede estar vacío.", e.getMessage());
-        }*/
+        }
     }
 
     @Test
@@ -223,12 +223,12 @@ public class FuncionesTest {
     //para salvar
 
      /**
-     * Test of validarTelefono method, of class Funciones.
+     * Test of validarTelefono method, of class Funciones. yo-michi.
      */
     @Test
     public void testValidarTelefono() {    
         System.out.println("validarTelefono");
-        String numero = "987654321";
+        String numero = "937654321";
         boolean expResult = true;
         boolean result = Funciones.validarTelefono(numero);
         assertEquals(expResult, result);
@@ -244,7 +244,7 @@ public class FuncionesTest {
     public void testValidarUsuarioRol() {
         System.out.println("validarUsuarioRol");
         Usuario usuario = new Usuario();
-        usuario.setUsuario_rol(1);
+        usuario.setUsuario_rol(0);
         boolean expResult = true;
         boolean result = Funciones.validarUsuarioRol(usuario);
         assertEquals(expResult, result);

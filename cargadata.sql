@@ -2,12 +2,14 @@ insert into persona (nombre,tipoDocumento,numDocumento,apellido,telefono,correo)
 insert into persona (nombre,tipoDocumento,numDocumento,apellido,telefono,correo)values("ADMINITRATOR","DNI","999995498","Martinez","854636745","adminitrator@gmail.com");
 insert into cate_rol(nombre,descripcion) values ("Cliente","Este rol es exclusivo para clientes del CarWash");
 insert into cate_rol(nombre,descripcion) values ("Administrador","Este rol es exclusivo para los administradores del CarWash");
-insert into usuario (usuario,contrasena,idRol,idPersona) values ("tokiro","tokiro",1,1);
-insert into usuario (usuario,contrasena,idRol,idPersona) values ("admin","admin",2,2);
+insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("tokiro","tokiro",1,1,3);
+insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("admin","admin",2,2,3);
 
 select * from persona;
 select * from usuario;
+select * from producto;/**/
 select * from cate_rol;
+select * from proveedor;
 
 SELECT idPersona, idRol FROM usuario WHERE idUsuario = 7;
 
@@ -25,3 +27,13 @@ select * from producto;
 insert into proveedor (razonSocial,ruc,direccion,telefono,correo) values ("GLORIA","123456789","JR ALCAZAR","123456789","MATISI");
 insert into producto (nombre,descripcion,precio,stock,stockMinimo,idProveedor) values ("Kassinma","chocolate hablando webada",2.20,2,2,1);
 SELECT p.*, prov.razonSocial FROM PRODUCTO p INNER JOIN PROVEEDOR prov ON p.idProveedor = prov.idProveedor WHERE idProducto = 0;
+
+
+
+SELECT USUARIO.contrasena FROM USUARIO WHERE USUARIO.idUsuario =2;
+
+/*update usuario set limiteIntentos=3 where idUsuario=4;*/
+
+SELECT idUsuario FROM USUARIO WHERE usuario="tokiro";
+
+

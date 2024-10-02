@@ -17,6 +17,9 @@ public class Autentica {
     
     public int getLogueado(String usr, String psw) {
         
+        Hash h=new Hash();
+        psw=h.StringToHash(psw, "SHA-256");
+        
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
