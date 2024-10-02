@@ -18,6 +18,9 @@
     Rol <br>
     <input type="text" class="form-control" name="usuario_rol" style="width: 30%" required> <br>
     
+    Número de Documento <br>
+    <input type="text" class="form-control" name="usuario_numDocumento" style="width: 30%" required> <br>
+    
     <input type="hidden" name="pagina" value="usuario_nuevo">
     
     <a href="dashboard.jsp?pagina=usuario_listar" class="btn btn-danger">Cancelar</a>

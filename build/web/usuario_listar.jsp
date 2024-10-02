@@ -20,9 +20,8 @@
             <th>Apellido</th>
             <th>Correo</th>
             <th>Telefono</th>
-            <th>Contraseña</th>
+            <th>Documento de Identidad</th>
             <th>Rol</th>
-            
             <th>Ver</th>
             <th>Editar</th>
             <th>Eliminar</th>
@@ -49,7 +48,7 @@
                 <%= ux.getUsuario_telefono()%>
             </td>
             <td>
-                <%= ux.getUsuario_password()%>
+                <%= ux.getUsuario_numDocumento()%>
             </td>
             <td>
                 <%= ux.getUsuario_rol()%>

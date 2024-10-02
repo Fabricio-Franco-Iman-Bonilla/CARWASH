@@ -127,8 +127,11 @@ CREATE TABLE USUARIO
 ( 
     idUsuario         INT  NOT NULL PRIMARY KEY auto_increment,
     usuario           VARCHAR(50)  NULL,
-    contrasena        VARCHAR(100)  NULL,
+    contrasena        VARCHAR(300)  NULL,
     idRol             INT  NULL,
+    limiteIntentos    INT  NULL default 3,
+    fechaSesion		  datetime,
+    ipUltimaSesion    VARCHAR(50) NULL, 
     idPersona         INT  NULL
 );
 
@@ -228,3 +231,5 @@ ALTER TABLE VEHICULO
     ADD CONSTRAINT R_19 FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
+
+/**/

@@ -1,13 +1,16 @@
 package pe.edu.dao.impl;
 
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import javax.servlet.http.HttpServletRequest;
 import pe.com.upn.tools.Conexion;
 import pe.com.upn.tools.Funciones;
+import pe.com.upn.tools.Hash;
 import pe.edu.dao.DAO;
 import pe.edu.dao.entity.Usuario;
 
@@ -36,7 +39,9 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             this.usuario_correo = resultado.getString("correo");
             this.usuario_telefono = resultado.getString("telefono");
             this.usuario_password = resultado.getString("contrasena");
+            this.usuario_usuario = resultado.getString("usuario");
             this.usuario_rol = resultado.getInt("ROL");
+            this.usuario_numDocumento = resultado.getString("numDocumento");
             sentencia.close();
             cnx.close();
         } catch (SQLException e) {
@@ -65,6 +70,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
                 usr.setUsuario_password(resultado.getString("contrasena"));
                 usr.setUsuario_rol(resultado.getInt("ROL"));
                 usr.setUsuario_usuario(resultado.getString("usuario"));
+                usr.setUsuario_numDocumento(resultado.getString("numDocumento"));
                 lista.add(usr);
             }
             sentencia.close();
@@ -190,10 +196,21 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         
         Connection cnx = null;
         PreparedStatement stmt = null;
+        String contraPrevia,contraPreviaHash;
+        Hash h=new Hash();
 
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
+            
+            String consulta = "SELECT USUARIO.contrasena "
+                    + "FROM USUARIO WHERE USUARIO.idUsuario ='" + obj.getUsuario_id() + "';";
+            Statement sentencia = cnx.createStatement();
+            ResultSet resultado = sentencia.executeQuery(consulta);
+            resultado.next();
+            contraPrevia = resultado.getString("contrasena");
+            contraPreviaHash = h.StringToHash(contraPrevia, "SHA-256");
+            
 
             // Iniciar una transacción
             cnx.setAutoCommit(false);
@@ -202,7 +219,13 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             String sqlUpdateUser = "UPDATE USUARIO SET usuario = ?, contrasena = ? WHERE idUsuario = ?;";
             stmt = cnx.prepareStatement(sqlUpdateUser);
             stmt.setString(1, obj.getUsuario_usuario());
-            stmt.setString(2, obj.getUsuario_password());
+            if (!obj.getUsuario_password().contains(contraPreviaHash)) {
+                stmt.setString(2, obj.getUsuario_password());
+            }
+            else{
+                stmt.setString(2, contraPrevia);
+            }
+            
             stmt.setInt(3, obj.getUsuario_id());
             stmt.executeUpdate();
             stmt.close();
@@ -289,5 +312,76 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             System.out.println(e.getMessage());
         }
         return usuarioId;
+    }
+    public int obtenerUsuarioIdPorUsuario(String usuario) {
+
+        
+        Connection cnx = null;
+        PreparedStatement stmt = null;
+        int idUsuario = -1; // Usamos -1 como valor por defecto si no se encuentra el usuario
+        try {
+            Conexion c = new Conexion();
+            cnx = c.conecta();
+            
+
+            // Consulta SQL para obtener el idUsuario basado en el correo
+            String sql = "SELECT idUsuario FROM USUARIO WHERE usuario = ?;";
+            stmt = cnx.prepareStatement(sql);
+            stmt.setString(1, usuario); // Establecer el correo en la consulta
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Si el correo existe en la base de datos, obtener el idUsuario
+            if (rs.next()) {
+                idUsuario = rs.getInt("idUsuario");
+            }
+
+            rs.close();
+            cnx.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return idUsuario;
+    }
+    
+    public void actualizarFechaInicioSesion(int userId, Timestamp timestamp, String ipAddress) {
+        // Datos de conexión a la base de datos
+        
+        Connection cnx = null;
+        PreparedStatement statement = null;
+        
+        // Consulta SQL para actualizar la fecha de inicio de sesión en un campo DATETIME
+        String sql = "UPDATE usuario SET fechaSesion = ?,ipUltimaSesion=? WHERE idUsuario = ?";
+        
+        try {
+            Conexion c = new Conexion();
+            cnx = c.conecta();
+            statement = cnx.prepareStatement(sql);
+
+            // Establecer los parámetros en la consulta SQL
+            statement.setTimestamp(1, timestamp); // Fecha y hora actual
+            statement.setString(2, ipAddress);     // Dirección IP
+            statement.setInt(3, userId); // ID del usuario
+
+            // Ejecutar la actualización
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar la fecha de inicio de sesión: " + e.getMessage());
+        }
+    }
+    
+    public String obtenerDireccionIp(HttpServletRequest request) {
+        // Obtener la IP desde el encabezado de la solicitud HTTP
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        if (ipAddress != null && !ipAddress.isEmpty() && !"unknown".equalsIgnoreCase(ipAddress)) {
+            // Si hay múltiples IPs en la cabecera, tomamos la primera
+            String[] ipAddresses = ipAddress.split(",");
+            return ipAddresses[0].trim(); // Retornamos la primera IP
+        }
+
+        // Si no hay cabecera, usamos getRemoteAddr()
+        return request.getRemoteAddr();
     }
 }

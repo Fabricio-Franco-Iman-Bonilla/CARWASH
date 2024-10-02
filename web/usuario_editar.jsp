@@ -23,6 +23,8 @@
               
             TELEFONO<br>
             <input type="number" class="form-control" name="usuario_telefono" style="width: 90%" value="<%=a.getUsuario_telefono()%>"><br>  
+            USUARIO
+            <input type="text" class="form-control" name="usuario_usuario" value="<%=a.getUsuario_usuario()%>"><br>
             CONTRASEÑA<br>
             <input type="text" class="form-control" name="usuario_password" style="width: 90%" value="<%=a.getUsuario_password()%>"><br>  
             ROL<br>

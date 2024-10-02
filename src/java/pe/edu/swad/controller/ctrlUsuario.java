@@ -1,4 +1,3 @@
-
 package pe.edu.swad.controller;
 
 import java.io.IOException;
@@ -12,11 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import pe.com.upn.tools.Autentica;
+import pe.com.upn.tools.Hash;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
- *º
+ * º
+ *
  * @author Juan
  */
 @WebServlet(name = "ctrlUsuario", urlPatterns = {"/ctrlUsuario"})
@@ -26,26 +29,25 @@ public class ctrlUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         Autentica au = new Autentica();
-        
+
         UsuarioImpl usuario = new UsuarioImpl();
         Usuario usu = new Usuario();
-        
-        String id="";
-        String nom="";
-        String apel="";
-        String corre="";
-        String tele="";
-        String contra="";
-        String rol="-1";
-        String usuname="";
-        int rolNum=-1;
-        
-        
-        String pag ="";
-        
-        
+
+        String id = "";
+        String nom = "";
+        String apel = "";
+        String corre = "";
+        String tele = "";
+        String contra = "";
+        String numDocumento = "";
+        String rol = "-1";
+        String usuname = "";
+        int rolNum = -1;
+
+        String pag = "";
+
         if (request.getParameter("usuario_id") != null) {
             id = request.getParameter("usuario_id");
         }
@@ -73,39 +75,53 @@ public class ctrlUsuario extends HttpServlet {
         if (request.getParameter("usuario_rol") != null) {
             rol = request.getParameter("usuario_rol");
         }
+        if (request.getParameter("usuario_numDocumento") != null) {
+            numDocumento = request.getParameter("usuario_numDocumento");
+        }
         
-        rolNum=Integer.parseInt(rol);
+        // Obtener la IP desde la solicitud
+        String ipAddress = usuario.obtenerDireccionIp(request);
+
+        Hash h = new Hash();
+        contra = h.StringToHash(contra, "SHA-256");
+
+        rolNum = Integer.parseInt(rol);
         usu.setUsuario_nombre(nom);
         usu.setUsuario_tipoDocumento("dsda");
-        usu.setUsuario_numDocumento("dsa");
+        usu.setUsuario_numDocumento(numDocumento);
         usu.setUsuario_apellido(apel);
         usu.setUsuario_telefono(tele);
         usu.setUsuario_correo(corre);
         usu.setUsuario_usuario(usuname);
         usu.setUsuario_password(contra);
         usu.setUsuario_rol(rolNum);
-        
-        
+
         if (pag.equals("usuario_nuevo")) {
             usuario.nuevo(usu);
             response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
         } else if (pag.equals("usuario_eliminar")) {
-            
+
             usuario.eliminar(id);
             response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
-        
+
         } else if (pag.equals("usuario_editar")) {
             usu.setUsuario_id(Integer.parseInt(id));
             usuario.editar(usu);
             response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
-        }else if (pag.equals("login")) {
-            
+        } else if (pag.equals("login")) {
+
             String usr = request.getParameter("usuario");
             String psw = request.getParameter("password");
 
             int logueado = au.getLogueado(usr, psw);
-            if(logueado == 1){
-                    // Obtener la sesión
+            if (logueado == 1) {
+                // Obtener la fecha y hora actual
+                Timestamp timestamp = new Timestamp(new Date().getTime());
+
+                // Llamar al método que actualiza la fecha de inicio de sesión
+                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
+                        ipAddress);
+                // Obtener la sesión
                 String usuarioId = usuario.obtenerUsuarioIdPorCorreo(usr);
                 HttpSession session = request.getSession();
                 // Guardar un dato en la sesión
@@ -113,10 +129,15 @@ public class ctrlUsuario extends HttpServlet {
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashCliente.jsp");
                 dispatcher.forward(request, response);
-            }else if(logueado == 2){
+            } else if (logueado == 2) {
+                // Obtener la fecha y hora actual
+                Timestamp timestamp = new Timestamp(new Date().getTime());
+
+                // Llamar al método que actualiza la fecha de inicio de sesión
+                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,ipAddress);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(request, response);
-            }else {
+            } else {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
                 dispatcher.forward(request, response);
             }
