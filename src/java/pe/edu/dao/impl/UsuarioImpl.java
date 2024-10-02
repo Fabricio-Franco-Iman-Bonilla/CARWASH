@@ -1,5 +1,9 @@
 package pe.edu.dao.impl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.concurrent.CompletableFuture;
 import javax.servlet.http.HttpServletRequest;
 import pe.com.upn.tools.Conexion;
 import pe.com.upn.tools.Funciones;
@@ -383,5 +388,21 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
 
         // Si no hay cabecera, usamos getRemoteAddr()
         return request.getRemoteAddr();
+    }
+    
+    public String obtenerIpPublica() {
+        String ip = null;
+        try {
+            URL url = new URL("http://api.ipify.org");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            ip = in.readLine();
+            in.close();
+        } catch (Exception e) {
+            System.out.println("Error al obtener la IP pública: ");
+        }
+        return ip;
     }
 }
