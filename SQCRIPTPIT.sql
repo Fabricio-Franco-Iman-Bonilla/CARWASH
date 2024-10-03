@@ -123,7 +123,7 @@ CREATE TABLE TIPO_VEHICULO
     descripcion       VARCHAR(250)  NULL
 );
 
-CREATE TABLE USUARIO 
+CREATE TABLE USUARIO
 ( 
     idUsuario         INT  NOT NULL PRIMARY KEY auto_increment,
     usuario           VARCHAR(50)  NULL,

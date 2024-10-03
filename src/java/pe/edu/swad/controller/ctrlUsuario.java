@@ -1,7 +1,12 @@
 package pe.edu.swad.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashSet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,10 +31,25 @@ import java.util.concurrent.CompletableFuture;
 @WebServlet(name = "ctrlUsuario", urlPatterns = {"/ctrlUsuario"})
 
 public class ctrlUsuario extends HttpServlet {
+    private static final String SECRET_KEY = "6LcOQFYqAAAAANwc9EqBqGBhh0uXi9D7PIX35bmd"; // Cambia por tu clave secreta de Google reCAPTCHA
+    private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Verificar CAPTCHA antes de proceder
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
+
+        if (!captchaVerified) {
+            //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
+            // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
+            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+            dispatcher.forward(request, response);
+            return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
+        }
 
         Autentica au = new Autentica();
 
@@ -144,6 +164,46 @@ public class ctrlUsuario extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
                 dispatcher.forward(request, response);
             }
+        }
+    }
+    
+    private boolean verifyRecaptcha(String gRecaptchaResponse) {
+        if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
+            return false;
+        }
+        try {// Conexión a la API de Google reCAPTCHA
+            URL url = new URL(RECAPTCHA_VERIFY_URL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Preparar los datos para enviar
+            String postParams = "secret=" + SECRET_KEY + "&response=" + gRecaptchaResponse;
+
+            // Enviar la solicitud POST
+            OutputStream os = conn.getOutputStream();
+            os.write(postParams.getBytes());
+            os.flush();
+            os.close();
+
+            // Leer la respuesta de la API
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Convertir la respuesta en String y verificar si contiene "success": true
+            String jsonResponse = response.toString();
+
+            // Verificar si el reCAPTCHA fue exitoso
+            return jsonResponse.contains("\"success\": true");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
