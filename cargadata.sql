@@ -2,8 +2,8 @@ insert into persona (nombre,tipoDocumento,numDocumento,apellido,telefono,correo)
 insert into persona (nombre,tipoDocumento,numDocumento,apellido,telefono,correo)values("ADMINITRATOR","DNI","999995498","Martinez","854636745","adminitrator@gmail.com");
 insert into cate_rol(nombre,descripcion) values ("Cliente","Este rol es exclusivo para clientes del CarWash");
 insert into cate_rol(nombre,descripcion) values ("Administrador","Este rol es exclusivo para los administradores del CarWash");
-insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("tokiro","tokiro",1,1,3);
-insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("admin","admin",2,2,3);
+insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("tokiro","e98a8940444681a1bbd04def259440dd0007e1cf6a27242ba6bddd385d93700e",1,1,3);/*password tokiro*/
+insert into usuario (usuario,contrasena,idRol,idPersona,limiteIntentos) values ("admin","8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",2,2,3); /*password admin*/
 
 select * from persona;
 select * from usuario;
