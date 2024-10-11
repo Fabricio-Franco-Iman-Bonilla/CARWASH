@@ -54,6 +54,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
     //Continuar corrigiendo desde aquí
     @Override
     public LinkedList<Cita> listar() {
+        //RER
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
