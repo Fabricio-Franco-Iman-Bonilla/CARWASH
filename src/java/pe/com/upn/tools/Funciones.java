@@ -10,12 +10,14 @@ import java.util.LinkedList;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import pe.com.upn.tablas.Cita;
+import pe.com.upn.tablas.CitaInfo;
 import java.sql.ResultSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import pe.edu.dao.entity.Cita;
 import pe.edu.dao.entity.Producto;
 import pe.edu.dao.entity.Usuario;
+import pe.edu.dao.impl.CitaImpl;
 import pe.edu.dao.impl.UsuarioImpl;
 
 /**
@@ -144,12 +146,12 @@ public class Funciones {
     }
     
     
-     public static boolean verificarCitasAgendadas(Cita[] citas, LocalDateTime nuevoHorario) {
+     public static boolean verificarCitasAgendadas(CitaImpl[] citas, LocalDateTime nuevoHorario) {
         int count = 0;
 
-        for (Cita cita : citas) {
+        for (CitaImpl cita : citas) {
             // Comparar el nuevo horario con los horarios ya agendados
-            if (cita.getFecha().equals(nuevoHorario)) {
+            if (cita.getHorario().equals(nuevoHorario)) {
                 count++;
             }
         }

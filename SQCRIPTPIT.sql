@@ -134,11 +134,15 @@ CREATE TABLE USUARIO
     ipUltimaSesion    VARCHAR(50) NULL, 
     idPersona         INT  NULL
 );
-
+/*
+--PARA MODIFICAR UNA COLUMNA O TIPO DE DATO
+ALTER TABLE VEHICULO
+MODIFY placa VARCHAR(7);
+*/
 CREATE TABLE VEHICULO 
 ( 
     idVehiculo        INT  NOT NULL PRIMARY KEY auto_increment,
-    placa             VARCHAR(6)  NULL,
+    placa             VARCHAR(7)  NULL,
     marca             VARCHAR(50)  NULL,
     anio              INT  NULL,
     idTipoVehiculo    INT  NULL,

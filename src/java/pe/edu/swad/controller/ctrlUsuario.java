@@ -145,7 +145,7 @@ public class ctrlUsuario extends HttpServlet {
                 usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
                         ipAddress);
                 // Obtener la sesión
-                String usuarioId = usuario.obtenerUsuarioIdPorCorreo(usr);
+                String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
                 HttpSession session = request.getSession();
                 // Guardar un dato en la sesión
                 session.setAttribute("nombreUsuario", usuarioId);

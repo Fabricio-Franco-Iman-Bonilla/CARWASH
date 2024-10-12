@@ -11,9 +11,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import pe.com.upn.tablas.Cita;
+import pe.com.upn.tablas.CitaInfo;
 import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.entity.Producto;
+import pe.edu.dao.impl.CitaImpl;
 import pe.edu.dao.impl.ProductoImpl;
 
 /**
@@ -273,14 +274,14 @@ public class FuncionesTest {
     @Test
     public void testVerificarCitasAgendadas() {
         System.out.println("verificarCitasAgendadas");
-        Cita cita1 =new Cita();
-        Cita cita2= new Cita();
-        Cita cita3= new Cita();
-        cita1.setFecha(LocalDateTime.of(2024, 9, 20, 10, 0));
-        cita2.setFecha(LocalDateTime.of(2024, 9, 20, 10, 0));
-        cita3.setFecha(LocalDateTime.of(2024, 9, 20, 11, 0));
+        CitaImpl cita1 =new CitaImpl();
+        CitaImpl cita2= new CitaImpl();
+        CitaImpl cita3= new CitaImpl();
+        cita1.setHorario(LocalDateTime.of(2024, 9, 20, 10, 0));
+        cita2.setHorario(LocalDateTime.of(2024, 9, 20, 10, 0));
+        cita3.setHorario(LocalDateTime.of(2024, 9, 20, 11, 0));
         
-        Cita[] citas = {cita1,cita2,cita3};
+        CitaImpl[] citas = {cita1,cita2,cita3};
         LocalDateTime nuevoHorario = LocalDateTime.of(2024, 9, 20, 11, 0);
         boolean expResult = true;
         boolean result = Funciones.verificarCitasAgendadas(citas, nuevoHorario);
