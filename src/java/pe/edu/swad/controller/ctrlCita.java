@@ -6,12 +6,16 @@ package pe.edu.swad.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pe.com.upn.tablas.Cita;
+import pe.com.upn.tablas.CitaInfo;
+import pe.edu.dao.impl.CitaImpl;
+import pe.edu.dao.impl.UsuarioImpl;
 
 /**
  *
@@ -24,20 +28,32 @@ public class ctrlCita extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Cita cita = new Cita();
-        
-        String cod = "";
+
+        CitaImpl cita = new CitaImpl();
+        UsuarioImpl usr = new UsuarioImpl();
+
+        int id = -1;
         String pla = "";
         String fec = "";
-        String usuario_id = "";
-        
-        String pag ="";
-        
-        
+        int usuario_id = -1;
+        int idPersona = -1;
+        int idVehiculo = -1;
+        String estado = "";
+        String hora = "";
+        LocalDateTime fechaHora = null;
+
+        String pag = "";
+
         if (request.getParameter("codigo_cita") != null) {
-            cod = request.getParameter("codigo_cita");
+            id = Integer.parseInt(request.getParameter("codigo_cita"));
         }
+        if (request.getParameter("estado") != null) {
+            estado = request.getParameter("estado");
+        }
+        if (request.getParameter("hora") != null) {
+            hora = request.getParameter("hora");
+        }
+
         if (request.getParameter("placa") != null) {
             pla = request.getParameter("placa");
         }
@@ -45,34 +61,56 @@ public class ctrlCita extends HttpServlet {
             fec = request.getParameter("fecha");
         }
         if (request.getParameter("usuario_id") != null) {
-            usuario_id = request.getParameter("usuario_id");
+            usuario_id = Integer.parseInt(request.getParameter("usuario_id"));
+        }
+        
+        if (request.getParameter("idVehiculo") != null) {
+            idVehiculo = Integer.parseInt(request.getParameter("idVehiculo"));
         }
         if (request.getParameter("pagina") != null) {
             pag = request.getParameter("pagina");
-        }        
+        }
+        if (fec != null && !fec.isEmpty() && hora != null && !hora.isEmpty()) {
+            // Combinar la fecha y la hora en un solo String
+            String fechaHoraStr = fec + "T" + hora;  // Ejemplo: "2024-10-05T14:30"
+
+            // Convertir el String a LocalDateTime
+            fechaHora = LocalDateTime.parse(fechaHoraStr);
+
+          
+        }
+        idPersona=usr.obteneriIdPersonaPorIdUsuario(usuario_id);
+
+        cita.setId(id);
+        cita.setEstado(estado);
+        cita.setHorario(fechaHora);
+        cita.setIdUsuario(usuario_id);
+        cita.setIdPersona(idPersona);
+        cita.setIdVehiculo(idVehiculo);
+
         if (pag.equals("cita_nuevo")) {
-            
+
             String y = request.getParameter("opcion");
             if (y.equals("usr")) {
-                cita.nuevo(cod, pla, fec, usuario_id);
-                response.sendRedirect("dashCitasCliente.jsp?pagina=cita_listar");                
-            }else if(y.equals("adm")){
-                cita.nuevo(cod, pla, fec, usuario_id);
+                cita.nuevo(cita);
+                response.sendRedirect("dashCitasCliente.jsp?pagina=cita_listar");
+            } else if (y.equals("adm")) {
+                cita.nuevo(cita);
                 response.sendRedirect("dashCitas.jsp?pagina=cita_listar");
             }
         } else if (pag.equals("cita_eliminar")) {
-            cita.eliminar(cod);
+            cita.eliminar(String.valueOf(id));
             response.sendRedirect("dashCitas.jsp?pagina=cita_listar");
         } else if (pag.equals("cita_editar")) {
             String y = request.getParameter("opcion");
             if (y.equals("usr")) {
-                cita.editar(cod, pla, fec, usuario_id);
+                cita.editar(cita);
                 response.sendRedirect("dashCitasCliente.jsp");
-                
-            }else if(y.equals("adm")){
-                cita.editar(cod, pla, fec, usuario_id);
+
+            } else if (y.equals("adm")) {
+                cita.editar(cita);
                 response.sendRedirect("dashCitas.jsp?pagina=cita_listar");
-            }        
+            }
         }
     }
 }

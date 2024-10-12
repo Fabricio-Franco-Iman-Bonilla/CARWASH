@@ -1,8 +1,12 @@
-<%@page import="pe.com.upn.tablas.Cita, pe.com.upn.tablas.Usuario" %>
+
+<%@page import="pe.com.upn.tablas.CitaInfo"%>
+<%@page import="pe.edu.dao.impl.CitaImpl"%>
+<%@page import="pe.edu.dao.entity.Usuario"%>
+<%@page import="pe.edu.dao.entity.Cita"%>
 <%@page import="java.util.LinkedList" %>
 
 <%
-    Cita cit = new Cita();
+    CitaImpl cit = new CitaImpl();
     Usuario usr = new Usuario();
     LinkedList<Cita> lista = new LinkedList<>();
     lista = cit.listar();
@@ -29,27 +33,27 @@
         %>        
         <tr>
             <td>
-                <%= ux.getCodigo()%>
+        <%= ux.getId()%>
             </td>
             <td>
-                <%= ux.getPlaca()%>
+                <%= ux.getIdVehiculo()%>
             </td>
             <td>
-                <%= ux.getFecha()%>
+                <%= ux.getHorario()%>
             </td>
             <td>
-                <%= ux.getUsuario_id()%>
+                <%= ux.getIdUsuario()%>
             </td>
             
             <td>
                 <form action="cita_ver.jsp" method="get" style="display: inline;">
-                    <input type="hidden" name="ver_cita" value="<%=ux.getUsuario_id()%>">
-                    <input type="hidden" name="ver_cita2" value="<%=ux.getCodigo()%>">
+                    <input type="hidden" name="ver_cita" value="<%=ux.getIdUsuario()%>">
+                    <input type="hidden" name="ver_cita2" value="<%=ux.getId()%>">
                     <button type="submit" class="btn btn-info" style="width: 80px;">ver</button>
                 </form>
             </td>
-            <td><a href="dashCitas.jsp?pagina=cita_editar&cita=<%= ux.getCodigo()%>" class="btn btn-warning tabla-boton">Editar</a></td>
-            <td><a href="dashCitas.jsp?pagina=cita_eliminar&cita=<%= ux.getCodigo()%>" class="btn btn-danger tabla-boton">Eliminar</a></td>
+            <td><a href="dashCitas.jsp?pagina=cita_editar&cita=<%= ux.getId()%>" class="btn btn-warning tabla-boton">Editar</a></td>
+            <td><a href="dashCitas.jsp?pagina=cita_eliminar&cita=<%= ux.getId()%>" class="btn btn-danger tabla-boton">Eliminar</a></td>
         </tr>
         <%
             }

@@ -2,6 +2,10 @@
 <%@page import="javax.swing.plaf.synth.ColorType"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    
+    String pagina="";
+    %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -24,7 +28,6 @@
                 <h2 style="text-align: center; padding-top: 50px">Administrador</h2>
                 
                 <%
-                    String pagina = "";
 
                     if (request.getParameter("pagina") != null) {
                         pagina = request.getParameter("pagina");
@@ -42,7 +45,7 @@
                 %> 
                 <%@include file="cita_ver.jsp" %>
                 <%
-                } else if (pagina.equals("cita_editar")) {
+                  } else if (pagina.equals("cita_editar")) {
                 %> 
                 <%@include file="cita_editar.jsp" %>
                 <%
@@ -54,6 +57,5 @@
                 %>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

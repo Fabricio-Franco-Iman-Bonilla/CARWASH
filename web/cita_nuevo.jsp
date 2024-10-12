@@ -10,9 +10,13 @@
     Placa <br>
     <input type="text" class="form-control" name="placa" style="width: 30%" required> <br>    
     Fecha <br>
-    <input type="date" class="form-control" name="fecha" style="width: 30%" required> <br>    
+    <input type="date" class="form-control" name="fecha" style="width: 30%" required> <br> 
+    Hora <br>
+    <input type="time" class="form-control" name="hora" style="width: 30%" required> <br>
     ID Usuario<br>
-    <input type="text" class="form-control" name="usuario_id" style="width: 30%" required> <br><br>
+    <input type="text" class="form-control" name="usuario_id" style="width: 30%" required> <br>
+    ID Vehiculo<br>
+    <input type="text" class="form-control" name="idVehiculo" style="width: 30%" required> <br><br>
     
     <input type="hidden" name="pagina" value="cita_nuevo">
     

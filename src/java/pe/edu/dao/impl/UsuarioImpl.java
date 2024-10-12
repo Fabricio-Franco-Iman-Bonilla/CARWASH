@@ -405,4 +405,34 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
         return ip;
     }
+    public int obteneriIdPersonaPorIdUsuario(int idUsuario) {
+
+        
+        Connection cnx = null;
+        PreparedStatement stmt = null;
+        int idPersona = -1; // Usamos -1 como valor por defecto si no se encuentra el usuario
+        try {
+            Conexion c = new Conexion();
+            cnx = c.conecta();
+            
+
+            // Consulta SQL para obtener el idUsuario basado en el correo
+            String sql = "SELECT idPersona FROM USUARIO WHERE idUsuario = ?;";
+            stmt = cnx.prepareStatement(sql);
+            stmt.setString(1, String.valueOf(idUsuario)); // Establecer el correo en la consulta
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Si el correo existe en la base de datos, obtener el idUsuario
+            if (rs.next()) {
+                idPersona = rs.getInt("idPersona");
+            }
+
+            rs.close();
+            cnx.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return idPersona;
+    }
 }
