@@ -31,25 +31,13 @@ import java.util.concurrent.CompletableFuture;
 @WebServlet(name = "ctrlUsuario", urlPatterns = {"/ctrlUsuario"})
 
 public class ctrlUsuario extends HttpServlet {
+
     private static final String SECRET_KEY = "6LcOQFYqAAAAANwc9EqBqGBhh0uXi9D7PIX35bmd"; // Cambia por tu clave secreta de Google reCAPTCHA
     private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // Verificar CAPTCHA antes de proceder
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
-
-        if (!captchaVerified) {
-            //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
-            // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-            dispatcher.forward(request, response);
-            return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
-        }
 
         Autentica au = new Autentica();
 
@@ -99,11 +87,10 @@ public class ctrlUsuario extends HttpServlet {
         if (request.getParameter("usuario_numDocumento") != null) {
             numDocumento = request.getParameter("usuario_numDocumento");
         }
-        
+
         // Obtener la IP desde la solicitud
         String ipAddress;
-        ipAddress=usuario.obtenerIpPublica();
-       
+        ipAddress = usuario.obtenerIpPublica();
 
         Hash h = new Hash();
         contra = h.StringToHash(contra, "SHA-256");
@@ -137,6 +124,19 @@ public class ctrlUsuario extends HttpServlet {
             String psw = request.getParameter("password");
 
             int logueado = au.getLogueado(usr, psw);
+
+            // Verificar CAPTCHA antes de proceder
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
+
+            if (!captchaVerified) {
+                //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
+                // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+                return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
+            }
+            
             if (logueado == 1) {
                 // Obtener la fecha y hora actual
                 Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -157,7 +157,7 @@ public class ctrlUsuario extends HttpServlet {
                 Timestamp timestamp = new Timestamp(new Date().getTime());
 
                 // Llamar al método que actualiza la fecha de inicio de sesión
-                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,ipAddress);
+                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp, ipAddress);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(request, response);
             } else {
@@ -166,7 +166,7 @@ public class ctrlUsuario extends HttpServlet {
             }
         }
     }
-    
+
     private boolean verifyRecaptcha(String gRecaptchaResponse) {
         if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
             return false;
