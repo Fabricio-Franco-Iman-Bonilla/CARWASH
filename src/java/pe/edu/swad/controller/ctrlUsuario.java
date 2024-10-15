@@ -128,7 +128,8 @@ public class ctrlUsuario extends HttpServlet {
             // Verificar CAPTCHA antes de proceder
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
-
+             
+            
             if (!captchaVerified) {
                 //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
                 // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
@@ -137,33 +138,58 @@ public class ctrlUsuario extends HttpServlet {
                 return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
             }
             
+            
+            // Obtener la fecha y hora actual
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+
+            // Llamar al método que actualiza la fecha de inicio de sesión
+            usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
+                    ipAddress);
+            // Obtener la sesión
+            String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
+            HttpSession session = request.getSession();
+            // Guardar un dato en la sesión
+            session.setAttribute("nombreUsuario", usuarioId);
+
+            Integer intentos = (Integer) session.getAttribute("intentos");
+            if (intentos == null) {
+                intentos = 0;
+            }
+            boolean bloqueado = false;
+            UsuarioImpl u = new UsuarioImpl();
+            u.ver(usuarioId);
+            int limiteIntentos=u.getLimiteIntentos();
+            if(usuarioId.contains("-1")){
+                limiteIntentos=3;
+            }
+
             if (logueado == 1) {
-                // Obtener la fecha y hora actual
-                Timestamp timestamp = new Timestamp(new Date().getTime());
-
-                // Llamar al método que actualiza la fecha de inicio de sesión
-                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
-                        ipAddress);
-                // Obtener la sesión
-                String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
-                HttpSession session = request.getSession();
-                // Guardar un dato en la sesión
-                session.setAttribute("nombreUsuario", usuarioId);
-
+                session.removeAttribute("intentos");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashCliente.jsp");
                 dispatcher.forward(request, response);
             } else if (logueado == 2) {
-                // Obtener la fecha y hora actual
-                Timestamp timestamp = new Timestamp(new Date().getTime());
-
-                // Llamar al método que actualiza la fecha de inicio de sesión
-                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp, ipAddress);
+                session.removeAttribute("intentos");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(request, response);
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-                dispatcher.forward(request, response);
+                intentos++;
+
+                if (intentos >= limiteIntentos) {
+                    intentos = 0;
+                    bloqueado = true;
+                    request.setAttribute("bloqueado", bloqueado);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=too_many_attempts");
+                    dispatcher.forward(request, response);
+
+                } else {
+                    request.setAttribute("bloqueado", false);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=true");
+                    dispatcher.forward(request, response);
+                }
+                session.setAttribute("intentos", intentos);
+
             }
+
         }
     }
 

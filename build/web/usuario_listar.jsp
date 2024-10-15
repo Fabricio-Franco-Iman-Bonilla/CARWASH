@@ -30,6 +30,14 @@
     <tbody>
         <%
             for (Usuario ux : lista) {
+            String nombreRol;
+            if ( ux.getUsuario_rol() == 1) {
+                nombreRol = "Cliente";
+            } else if (ux.getUsuario_rol()== 2) {
+                nombreRol = "Administrador";
+            } else {
+                nombreRol = "Rol desconocido"; // Para manejar otros casos
+            }
         %>        
         <tr>
             <td>
@@ -51,7 +59,8 @@
                 <%= ux.getUsuario_numDocumento()%>
             </td>
             <td>
-                <%= ux.getUsuario_rol()%>
+                <%= nombreRol%>
+                
             </td>
             <td><a href="dashboard.jsp?pagina=usuario_ver&usuario=<%= ux.getUsuario_id()%>" class="btn btn-info" style="width: 80px">ver</a></td>
             <td><a href="dashboard.jsp?pagina=usuario_editar&usuario=<%= ux.getUsuario_id()%>" class="btn btn-warning" style="width: 80px">Editar</a></td>
