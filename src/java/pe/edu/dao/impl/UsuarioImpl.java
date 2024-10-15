@@ -25,6 +25,15 @@ import pe.edu.dao.entity.Usuario;
  */
 public class UsuarioImpl extends Usuario implements DAO<Usuario> {
 
+    public int getLimiteIntentos() {
+        return limiteIntentos;
+    }
+
+    public void setLimiteIntentos(int limiteIntentos) {
+        this.limiteIntentos = limiteIntentos;
+    }
+
+    protected int limiteIntentos;
     public UsuarioImpl() {
     }
 
@@ -33,7 +42,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "SELECT USUARIO.idUsuario,USUARIO.usuario,USUARIO.contrasena,PERSONA.nombre,PERSONA.apellido,PERSONA.tipoDocumento,PERSONA.numDocumento,PERSONA.telefono,PERSONA.correo,CATE_ROL.nombre AS rolNombre, USUARIO.idRol as ROL\n"
+            String consulta = "SELECT USUARIO.idUsuario,USUARIO.usuario,USUARIO.contrasena,USUARIO.limiteIntentos,PERSONA.nombre,PERSONA.apellido,PERSONA.tipoDocumento,PERSONA.numDocumento,PERSONA.telefono,PERSONA.correo,CATE_ROL.nombre AS rolNombre, USUARIO.idRol as ROL\n"
                     + "FROM USUARIO INNER JOIN PERSONA ON USUARIO.idPersona = PERSONA.idPersona INNER JOIN CATE_ROL ON USUARIO.idRol = CATE_ROL.idRol WHERE USUARIO.idUsuario ='" + id + "';";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
@@ -44,6 +53,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             this.usuario_correo = resultado.getString("correo");
             this.usuario_telefono = resultado.getString("telefono");
             this.usuario_password = resultado.getString("contrasena");
+            this.limiteIntentos = resultado.getInt("limiteIntentos");
             this.usuario_usuario = resultado.getString("usuario");
             this.usuario_rol = resultado.getInt("ROL");
             this.usuario_numDocumento = resultado.getString("numDocumento");
@@ -221,7 +231,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             cnx.setAutoCommit(false);
 
             // Paso 1: Actualizar la tabla USUARIO
-            String sqlUpdateUser = "UPDATE USUARIO SET usuario = ?, contrasena = ? WHERE idUsuario = ?;";
+            String sqlUpdateUser = "UPDATE USUARIO SET usuario = ?, contrasena = ?,idRol=? WHERE idUsuario = ?;";
             stmt = cnx.prepareStatement(sqlUpdateUser);
             stmt.setString(1, obj.getUsuario_usuario());
             if (!obj.getUsuario_password().contains(contraPreviaHash)) {
@@ -230,8 +240,8 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             else{
                 stmt.setString(2, contraPrevia);
             }
-            
-            stmt.setInt(3, obj.getUsuario_id());
+            stmt.setInt(3, obj.getUsuario_rol());
+            stmt.setInt(4, obj.getUsuario_id());
             stmt.executeUpdate();
             stmt.close();
 
