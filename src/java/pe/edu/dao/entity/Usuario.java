@@ -55,6 +55,15 @@ public class Usuario {
     protected String usuario_usuario;
     protected String usuario_tipoDocumento;
     protected String usuario_numDocumento;
+
+    public boolean getUsuario_cuentabloqueda() {
+        return usuario_cuentabloqueda;
+    }
+
+    public void setUsuario_cuentabloqueda(boolean usuario_cuentabloqueda) {
+        this.usuario_cuentabloqueda = usuario_cuentabloqueda;
+    }
+    protected boolean usuario_cuentabloqueda;
     
 
     public int getUsuario_id() {

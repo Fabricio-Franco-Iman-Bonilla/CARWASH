@@ -134,6 +134,12 @@ CREATE TABLE USUARIO
     ipUltimaSesion    VARCHAR(50) NULL, 
     idPersona         INT  NULL
 );
+
+ALTER TABLE Usuario
+ADD COLUMN cuentaBloqueada BOOLEAN DEFAULT FALSE,
+ADD COLUMN tiempoBloqueo TIMESTAMP NULL;
+
+
 /*
 --PARA MODIFICAR UNA COLUMNA O TIPO DE DATO
 ALTER TABLE VEHICULO
@@ -149,6 +155,41 @@ CREATE TABLE VEHICULO
     natenciones       INT  NULL,
     idUsuario         INT  NULL
 );
+
+DELIMITER //
+
+CREATE TRIGGER IF NOT EXISTS bloquear_cuenta
+BEFORE UPDATE ON usuario
+FOR EACH ROW
+BEGIN
+    -- Si el número de intentos llega a 0, bloquea la cuenta y registra el tiempo de bloqueo
+    IF NEW.limiteIntentos = 0 THEN
+        SET NEW.cuentaBloqueada = 1;
+        SET NEW.tiempoBloqueo = NOW(); -- Registra el tiempo de bloqueo actual
+    END IF;
+END;
+//
+DELIMITER ;
+
+/*EVENTO PARA DESBLOQUEO AUTOMATICO*/
+DELIMITER //
+CREATE EVENT IF NOT EXISTS desbloquear_cuentas
+ON SCHEDULE EVERY 15 MINUTE
+DO
+BEGIN
+    UPDATE usuario
+    SET limiteIntentos = 3, 
+        cuentaBloqueada = 0,
+        tiempoBloqueo = NULL
+    WHERE cuentaBloqueada = 1 
+      AND TIMESTAMPDIFF(MINUTE, tiempoBloqueo, NOW()) >= 15;
+END;
+//
+DELIMITER ;
+
+
+
+
 
 -- Relaciones de Claves Foráneas
 ALTER TABLE BOLETA 

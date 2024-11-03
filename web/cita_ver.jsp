@@ -18,10 +18,6 @@
     LocalDateTime horario = citi.getHorario();
     LocalDate fecha = horario.toLocalDate();  // Obtener solo la fecha
     LocalTime hora = horario.toLocalTime();   // Obtener solo la hora
-    
-
-    
-    
 %>
 
 <div class="row">

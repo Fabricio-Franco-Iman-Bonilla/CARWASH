@@ -34,6 +34,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
     }
 
     protected int limiteIntentos;
+
     public UsuarioImpl() {
     }
 
@@ -42,7 +43,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "SELECT USUARIO.idUsuario,USUARIO.usuario,USUARIO.contrasena,USUARIO.limiteIntentos,PERSONA.nombre,PERSONA.apellido,PERSONA.tipoDocumento,PERSONA.numDocumento,PERSONA.telefono,PERSONA.correo,CATE_ROL.nombre AS rolNombre, USUARIO.idRol as ROL\n"
+            String consulta = "SELECT USUARIO.idUsuario,USUARIO.usuario,USUARIO.contrasena,USUARIO.limiteIntentos,PERSONA.nombre,PERSONA.apellido,PERSONA.tipoDocumento,PERSONA.numDocumento,PERSONA.telefono,PERSONA.correo,CATE_ROL.nombre AS rolNombre, USUARIO.idRol as ROL,USUARIO.cuentaBloqueada\n"
                     + "FROM USUARIO INNER JOIN PERSONA ON USUARIO.idPersona = PERSONA.idPersona INNER JOIN CATE_ROL ON USUARIO.idRol = CATE_ROL.idRol WHERE USUARIO.idUsuario ='" + id + "';";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
@@ -57,6 +58,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             this.usuario_usuario = resultado.getString("usuario");
             this.usuario_rol = resultado.getInt("ROL");
             this.usuario_numDocumento = resultado.getString("numDocumento");
+            this.usuario_cuentabloqueda = resultado.getBoolean("cuentaBloqueada");
             sentencia.close();
             cnx.close();
         } catch (SQLException e) {
@@ -208,16 +210,16 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
 
     @Override
     public void editar(Usuario obj) {
-        
+
         Connection cnx = null;
         PreparedStatement stmt = null;
-        String contraPrevia,contraPreviaHash;
-        Hash h=new Hash();
+        String contraPrevia, contraPreviaHash;
+        Hash h = new Hash();
 
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
-            
+
             String consulta = "SELECT USUARIO.contrasena "
                     + "FROM USUARIO WHERE USUARIO.idUsuario ='" + obj.getUsuario_id() + "';";
             Statement sentencia = cnx.createStatement();
@@ -225,7 +227,6 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             resultado.next();
             contraPrevia = resultado.getString("contrasena");
             contraPreviaHash = h.StringToHash(contraPrevia, "SHA-256");
-            
 
             // Iniciar una transacción
             cnx.setAutoCommit(false);
@@ -236,8 +237,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             stmt.setString(1, obj.getUsuario_usuario());
             if (!obj.getUsuario_password().contains(contraPreviaHash)) {
                 stmt.setString(2, obj.getUsuario_password());
-            }
-            else{
+            } else {
                 stmt.setString(2, contraPrevia);
             }
             stmt.setInt(3, obj.getUsuario_rol());
@@ -297,7 +297,6 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
     }
 
-    
     public String obtenerUsuarioIdPorCorreo(String correo) {
 
         String usuarioId = null;
@@ -307,7 +306,6 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
-            
 
             // Consulta SQL para obtener el idUsuario basado en el correo
             String sql = "SELECT u.idUsuario FROM USUARIO u JOIN PERSONA p ON u.idPersona = p.idPersona WHERE p.correo = ?;";
@@ -328,16 +326,15 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
         return usuarioId;
     }
+
     public int obtenerUsuarioIdPorUsuario(String usuario) {
 
-        
         Connection cnx = null;
         PreparedStatement stmt = null;
         int idUsuario = -1; // Usamos -1 como valor por defecto si no se encuentra el usuario
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
-            
 
             // Consulta SQL para obtener el idUsuario basado en el correo
             String sql = "SELECT idUsuario FROM USUARIO WHERE usuario = ?;";
@@ -358,16 +355,16 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
         return idUsuario;
     }
-    
+
     public void actualizarFechaInicioSesion(int userId, Timestamp timestamp, String ipAddress) {
         // Datos de conexión a la base de datos
-        
+
         Connection cnx = null;
         PreparedStatement statement = null;
-        
+
         // Consulta SQL para actualizar la fecha de inicio de sesión en un campo DATETIME
         String sql = "UPDATE usuario SET fechaSesion = ?,ipUltimaSesion=? WHERE idUsuario = ?";
-        
+
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
@@ -386,7 +383,60 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
             System.err.println("Error al actualizar la fecha de inicio de sesión: " + e.getMessage());
         }
     }
-    
+
+    public void restarIntentos(int idUsuario) {
+        // Datos de conexión a la base de datos
+
+        Connection cnx = null;
+        PreparedStatement stmtSelect = null;
+        PreparedStatement stmtUpdateIntentos = null;
+        PreparedStatement stmtBloquearCuenta = null;
+        
+
+        // Consulta SQL para actualizar la fecha de inicio de sesión en un campo DATETIME
+        String querySelect = "SELECT limiteIntentos, cuentaBloqueada FROM usuario WHERE idUsuario = ?";
+        String queryUpdateIntentos = "UPDATE usuario SET limiteIntentos = limiteIntentos - 1 WHERE idUsuario = ?";
+        String queryBloquearCuenta = "UPDATE usuario SET limiteIntentos = 0, cuentaBloqueada = 1, tiempoBloqueo = ? WHERE idUsuario = ?";
+
+        try {
+            Conexion c = new Conexion();
+            cnx = c.conecta();
+            stmtSelect = cnx.prepareStatement(querySelect);
+            stmtUpdateIntentos = cnx.prepareStatement(queryUpdateIntentos);
+            stmtBloquearCuenta = cnx.prepareStatement(queryBloquearCuenta);
+            
+
+            // Paso 1: Verificar intentos y cuenta bloqueada
+            stmtSelect.setInt(1, idUsuario);
+            ResultSet rs = stmtSelect.executeQuery();
+            if (rs.next()) {
+                int intentos = rs.getInt("limiteIntentos");
+                boolean cuentaBloqueada = rs.getBoolean("cuentaBloqueada");
+
+                if (cuentaBloqueada) {
+                    System.out.println("La cuenta está bloqueada.");
+                } else if (intentos > 1) {
+                    // Paso 2: Reducir intentos en 1
+                    stmtUpdateIntentos.setInt(1, idUsuario);
+                    stmtUpdateIntentos.executeUpdate();
+                    System.out.println("Intentos restantes: " + (intentos - 1));
+                } else {
+                    // Paso 3: Bloquear cuenta y registrar tiempo de bloqueo
+                    stmtBloquearCuenta.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                    stmtBloquearCuenta.setInt(2, idUsuario);
+                    stmtBloquearCuenta.executeUpdate();
+                    System.out.println("La cuenta ha sido bloqueada debido a intentos fallidos.");
+                }
+            } else {
+                System.out.println("Usuario no encontrado.");
+            }
+            cnx.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar la fecha de inicio de sesión: " + e.getMessage());
+        }
+    }
+
     public String obtenerDireccionIp(HttpServletRequest request) {
         // Obtener la IP desde el encabezado de la solicitud HTTP
         String ipAddress = request.getHeader("X-Forwarded-For");
@@ -399,7 +449,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         // Si no hay cabecera, usamos getRemoteAddr()
         return request.getRemoteAddr();
     }
-    
+
     public String obtenerIpPublica() {
         String ip = null;
         try {
@@ -415,16 +465,15 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         }
         return ip;
     }
+
     public int obteneriIdPersonaPorIdUsuario(int idUsuario) {
 
-        
         Connection cnx = null;
         PreparedStatement stmt = null;
         int idPersona = -1; // Usamos -1 como valor por defecto si no se encuentra el usuario
         try {
             Conexion c = new Conexion();
             cnx = c.conecta();
-            
 
             // Consulta SQL para obtener el idUsuario basado en el correo
             String sql = "SELECT idPersona FROM USUARIO WHERE idUsuario = ?;";
