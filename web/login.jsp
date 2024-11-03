@@ -8,12 +8,16 @@
     
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
-        const bloqueoTiempo = 30; // en segundos
+        const bloqueoTiempo = 60; // en segundos
         let tiempoRestante = bloqueoTiempo;
 
         function mostrarError(mensaje) {
             document.getElementById('mensajeError').innerText = mensaje;
             document.getElementById('mensajeError').style.display = 'block';
+        }
+        function mostrarErrorBloqueo(mensaje) {
+            document.getElementById('mensajeErrorBloqueo').innerText = mensaje;
+            document.getElementById('mensajeErrorBloqueo').style.display = 'block';
         }
 
         function bloquearCampos() {
@@ -45,6 +49,7 @@
         function verificarBloqueo() {
             const bloqueado = '<%= request.getAttribute("bloqueado") != null ? request.getAttribute("bloqueado") : "false" %>';
             if (bloqueado === 'true') {
+                mostrarErrorBloqueo("LA CUENTA SE ENCUENTRA BLOQUEADA, POR FAVOR INTENTA MÁS TARDE")
                 bloquearCampos();
             }
         }
@@ -56,6 +61,7 @@
     <center>
         <div style="width: 400px" class="card loginForm">
             <div id="mensajeError" style="color: red; display: none;"></div>
+            <div id="mensajeErrorBloqueo" style="color: red; display: none;"></div>
             <form action="ctrlUsuario" method="post">
                 <img src="imagenes/Logo Mr Moon 1.png" alt="logo" width="200px"><b>MR.</b>Moon
                 <h3>Login</h3><br>

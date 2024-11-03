@@ -54,7 +54,7 @@
             <div class="form-group">
                 <label for="usuario_usuario">Nombre de Usuario</label>
                 <input type="text" id="usuario_usuario" class="form-control" name="usuario_usuario" 
-                       maxlength="100" style="width: 100%" required value=" " autocomplete="">
+                       maxlength="100" style="width: 100%" required value="" autocomplete="">
             </div>
     
             <!-- Contraseña: máximo 255 caracteres -->
