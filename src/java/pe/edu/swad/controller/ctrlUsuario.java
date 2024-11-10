@@ -22,6 +22,7 @@ import pe.edu.dao.impl.UsuarioImpl;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
+import javax.servlet.http.Cookie;
 
 /**
  * º
@@ -88,10 +89,6 @@ public class ctrlUsuario extends HttpServlet {
             numDocumento = request.getParameter("usuario_numDocumento");
         }
 
-        // Obtener la IP desde la solicitud
-        String ipAddress;
-        ipAddress = usuario.obtenerIpPublica();
-
         Hash h = new Hash();
         contra = h.StringToHash(contra, "SHA-256");
 
@@ -136,7 +133,6 @@ public class ctrlUsuario extends HttpServlet {
                 dispatcher.forward(request, response);
                 return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
             }
-            
 
             // Obtener la sesión
             String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
@@ -152,35 +148,20 @@ public class ctrlUsuario extends HttpServlet {
                 intentos = 0;
             }
             boolean bloqueado = false;
-            
+
             int limiteIntentos = u.getLimiteIntentos();
             if (usuarioId.contains("-1")) {
                 limiteIntentos = 3;
             }
 
             if (logueado == 1 && !u.getUsuario_cuentabloqueda()) {
-                session = request.getSession();
-                session.setAttribute("usuario", u.getUsuario_usuario());
-
-                // Obtener la fecha y hora actual
-                Timestamp timestamp = new Timestamp(new Date().getTime());
-
-                // Llamar al método que actualiza la fecha de inicio de sesión
-                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
-                        ipAddress);
-                session.removeAttribute("intentos");
+                
+                logueoExitoso(request, response, session, u);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashCliente.jsp");
                 dispatcher.forward(request, response);
             } else if (logueado == 2 && !u.getUsuario_cuentabloqueda()) {
-                session = request.getSession();
-                session.setAttribute("usuario", u.getUsuario_usuario());
-                // Obtener la fecha y hora actual
-                Timestamp timestamp = new Timestamp(new Date().getTime());
-
-                // Llamar al método que actualiza la fecha de inicio de sesión
-                usuario.actualizarFechaInicioSesion(usuario.obtenerUsuarioIdPorUsuario(usr), timestamp,
-                        ipAddress);
-                session.removeAttribute("intentos");
+                
+                logueoExitoso(request, response, session, u);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
                 dispatcher.forward(request, response);
             } else {
@@ -245,5 +226,26 @@ public class ctrlUsuario extends HttpServlet {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private void logueoExitoso(HttpServletRequest request, HttpServletResponse response, HttpSession session, UsuarioImpl u) {
+        // Obtener la IP desde la solicitud
+        String ipAddress;
+        ipAddress = u.obtenerIpPublica();
+        session = request.getSession();
+        session.setAttribute("usuario", u.getUsuario_usuario());
+
+        // Obtener la fecha y hora actual
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+
+        // Llamar al método que actualiza la fecha de inicio de sesión
+        u.actualizarFechaInicioSesion(u.obtenerUsuarioIdPorUsuario(u.getUsuario_usuario()), timestamp,
+                ipAddress);
+        session.removeAttribute("intentos");
+        // Suponiendo que tienes la variable `rol` después de la autenticación
+        Cookie rolCookie = new Cookie("userRole", String.valueOf(u.getUsuario_rol())); // "admin" o "usuario" basado en el rol
+        rolCookie.setMaxAge(1 * 60); // La cookie expira en 30 minutos
+        response.addCookie(rolCookie);
+
     }
 }

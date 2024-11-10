@@ -48,7 +48,17 @@ public class AuthFilter implements Filter {
 
         boolean isAdminPath = !(requestURI.contains("Cliente") || requestURI.contains("cliente"));
         boolean isUserPath = (requestURI.contains("Cliente") || requestURI.contains("cliente"));
-
+        
+        // Verifica si la sesión ya está activa y manda de frente a pantalla principal
+        if (requestURI.equals("/CarWash-develop/login.jsp") && "2".equals(rol)) {
+            
+            httpResponse.sendRedirect("dashboard.jsp"); // Cambia esto a tu página de error
+            return;
+        } else if (requestURI.equals("/CarWash-develop/login.jsp") && "1".equals(rol)) {
+            // Si es una ruta de usuario, verificar que el rol sea "user" o "admin"
+            httpResponse.sendRedirect("dashCliente.jsp");
+            return;
+        }
         // Verifica si la ruta actual está en la lista de exclusiones
         if (excludedPaths.stream().anyMatch(requestURI::endsWith)) {
             // Si está en la lista, continúa con la solicitud
@@ -81,6 +91,8 @@ public class AuthFilter implements Filter {
             httpResponse.sendRedirect("error.jsp");
             return;
         }
+        
+        
 
         // Si está autenticado correctamente, continúa con la solicitud
         chain.doFilter(request, response);

@@ -6,7 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pe.com.upn.tablas.Pago;
+import pe.edu.dao.entity.Comprobante;
+import pe.edu.dao.impl.ComprobanteImpl;
 
 @WebServlet(name = "ctrlPago", urlPatterns = {"/ctrlPago"})
 public class ctrlPago extends HttpServlet {
@@ -14,19 +15,19 @@ public class ctrlPago extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Pago pago = new Pago();
-        
-        Integer id_p=0 ;
+
+        ComprobanteImpl pago = new ComprobanteImpl();
+
+        Integer id_p = 0;
         String dni = "";
         String nom = "";
         String pla = "";
         String tip_lav = "";
         String tam_auto = "";
         Double prec = null;
-        
+
         String pag = "";
-        
+
         if (request.getParameter("codigo") != null) {
             id_p = Integer.parseInt(request.getParameter("codigo"));
         }
@@ -50,19 +51,20 @@ public class ctrlPago extends HttpServlet {
         }
         if (request.getParameter("pagina") != null) {
             pag = request.getParameter("pagina");
-        }        
-        
+        }
+
+        //FALTA EGULAR MAÑANA
         if ("pago_nuevo".equals(pag)) {
-            System.out.println(id_p+ " "+ dni+ " "+nom+ " "+pla+ " "+tip_lav+ " "+tam_auto+ " "+prec);
-            if(pago.nuevo(id_p, dni, nom, pla, tip_lav, tam_auto, prec))
-                response.sendRedirect("dashPagos.jsp?pagina=pago_listar");
-            else
-                System.out.println("No se registro");
+            System.out.println(id_p + " " + dni + " " + nom + " " + pla + " " + tip_lav + " " + tam_auto + " " + prec);
+            pago.nuevo(pago);
+
+            response.sendRedirect("dashPagos.jsp?pagina=pago_listar");
+
         } else if ("pago_eliminar".equals(pag)) {
-            pago.eliminar(id_p);
+            pago.eliminar(String.valueOf(id_p));
             response.sendRedirect("dashPagos.jsp?pagina=pago_listar");
         } else if ("pago_editar".equals(pag)) {
-            pago.editar(id_p, dni, nom, pla, tip_lav, tam_auto, prec);
+            pago.editar(pago);
             response.sendRedirect("dashPagos.jsp?pagina=pago_listar");
         }
     }
