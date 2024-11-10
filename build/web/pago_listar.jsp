@@ -1,10 +1,11 @@
-<%@page import="pe.com.upn.tablas.Pago" %>
+<%@page import="pe.edu.dao.impl.ComprobanteImpl"%>
+<%@page import="pe.edu.dao.entity.Comprobante"%>
 <%@page import="java.util.LinkedList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Pago prd = new Pago();
-    LinkedList<Pago> lista = new LinkedList<>();
+    ComprobanteImpl  prd = new ComprobanteImpl();
+    LinkedList<Comprobante> lista = new LinkedList<>();
     lista = prd.listar();
 %>
 
@@ -14,11 +15,11 @@
 <table id="myTable" class="display">
     <thead>
         <tr>
-            <th>Codigo Factura</th>
-            <th>DNI</th>            
-            <th>Placa</th>
-            <th>Tipo de Lavado</th>            
-            <th>Precio</th>
+            <th>Codigo Comprobante</th>
+            <th>ID USUARIO</th>            
+            <th>Fecha de Emisión</th>
+            <th>Metodo de pago</th>            
+            <th>Subtotal</th>
             <th>Ver</th>
             <th>Editar</th>
             <th>Eliminar</th>
@@ -26,27 +27,27 @@
     </thead>
     <tbody>
          <%
-            for (Pago ux : lista) {
+            for (Comprobante ux : lista) {
         %>        
         <tr>
             <td>
-                <%= ux.getId_pago()%>
+                <%= ux.getIdComprobante()%>
             </td>
             <td>
-                <%= ux.getDni()%>
+                <%= ux.getIdUsuario()%>
             </td>
             <td>
-                <%= ux.getPlaca()%>
+                <%= ux.getFechaEmision()%>
             </td>
             <td>
-                <%= ux.getTipo_lavado()%>
+                <%= ux.getMetodoPago()%>
             </td>
             <td>
-                <%= ux.getPrecio()%>
+                <%= ux.getSubtotal()%>
             </td>
-            <td><a href="dashPagos.jsp?pagina=pago_ver&pago=<%= ux.getId_pago()%>" class="btn btn-info" style="width: 80px">ver</a></td>
-            <td><a href="dashPagos.jsp?pagina=pago_editar&pago=<%= ux.getId_pago()%>" class="btn btn-warning" style="width: 80px">Editar</a></td>
-            <td><a href="dashPagos.jsp?pagina=pago_eliminar&pago=<%= ux.getId_pago()%>" class="btn btn-danger" style="width: 80px">Eliminar</a></td>
+            <td><a href="dashPagos.jsp?pagina=pago_ver&pago=<%= ux.getIdComprobante()%>" class="btn btn-info" style="width: 80px">ver</a></td>
+            <td><a href="dashPagos.jsp?pagina=pago_editar&pago=<%= ux.getIdComprobante()%>" class="btn btn-warning" style="width: 80px">Editar</a></td>
+            <td><a href="dashPagos.jsp?pagina=pago_eliminar&pago=<%= ux.getIdComprobante()%>" class="btn btn-danger" style="width: 80px">Eliminar</a></td>
         </tr>
         <%
             }
