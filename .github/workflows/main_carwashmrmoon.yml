@@ -24,8 +24,9 @@ jobs:
 
       - name: Compile JSP project
         run: |
-          javac -d ./build/classes $(find ./src -name "*.java")  # Compila los archivos Java
-          cp -r ./web/* ./build/web                              # Copia los archivos .jsp y web
+          javac -cp ./librerias/servlet-api.jar -d ./build/classes $(find ./src -name "*.java")  # Compila los archivos Java con el classpath de servlet
+          mkdir -p ./build/web                                     # Asegura que la carpeta de destino exista
+          cp -r ./web/* ./build/web                                # Copia los archivos .jsp y demás archivos web
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
