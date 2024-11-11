@@ -68,6 +68,7 @@ jobs:
         with:
           app-name: 'CarwashMrMoon'
           slot-name: 'Production'
-          package: './target/carwashmrmoon.war'
+          package: '${{ github.workspace }}/target/carwashmrmoon.war'
+
           
           
