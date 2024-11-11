@@ -23,9 +23,10 @@ jobs:
         run: |
           javac -cp .\librerias\servlet-api.jar -d .\build\classes $(Get-ChildItem .\src -Recurse -Filter "*.java" | ForEach-Object { $_.FullName })
       
-      - name: Copy .jsp and web files
+      - name: Copiar archivos .jsp y web
         run: |
-          Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse
+          Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse -Force
+
 
       - name: Package WAR file
         run: |
