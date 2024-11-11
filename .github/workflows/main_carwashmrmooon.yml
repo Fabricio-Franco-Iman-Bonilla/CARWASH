@@ -22,13 +22,14 @@ jobs:
       - name: Compile JSP project
         run: |
           # Compila los archivos .java
-          javac -cp .\librerias\servlet-api.jar -d .\build\classes $(Find-Str .\src -Pattern "*.java")  
+          javac -cp .\librerias\servlet-api.jar -d .\build\classes $(Get-ChildItem .\src -Recurse -Filter "*.java" | ForEach-Object { $_.FullName })
           
           # Copia los archivos .jsp y web
           Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse 
           
           # Empaqueta en un archivo WAR
           jar -cvf .\target\carwashmrmoon.war -C .\build\web . -C .\build\classes .
+
           
       - name: List target directory
         run: dir .\target  # Verifica que el archivo WAR esté en la carpeta 'target'
