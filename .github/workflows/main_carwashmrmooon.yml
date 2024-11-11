@@ -11,10 +11,10 @@ jobs:
     runs-on: windows-latest  # Cambiado a Windows
 
     steps:
-      - uses: actions/checkout@v4  # Clona tu repositorio
+      - uses: actions/checkout@v3  # Clona tu repositorio
 
       - name: Set up Java version
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'microsoft'  # Configura Java 21 de Microsoft
@@ -36,13 +36,13 @@ jobs:
         run: dir .\target  # Verifica que el archivo WAR esté en la carpeta 'target'
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: java-app
           path: .\target\carwashmrmoon.war  # Asegúrate de que el archivo WAR se suba
 
   deploy:
-    runs-on: windows-latest  # Cambiado a Windows
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -52,21 +52,24 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
-          name: java-app  # Descarga el archivo WAR
+          name: java-app
 
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0BA2D6DB5B24465A8C7185D7210C62D1 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_35CD6BD1F78C4349A6193B9453CD99BB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C72A7441992B40D4934C4CAECB790B31 }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}  # Si usas secreto de cliente
+          enable-AzPSSession: false
+          environment: azurecloud
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'CarwashMrMoon'  # Nombre de tu Azure App Service
-          slot-name: 'Production'    # Nombre del slot
-          package: .\carwashmrmoon.war  # Ruta del archivo WAR
+          app-name: 'CarwashMrMoon'
+          slot-name: 'Production'
+          package: '*.war'
