@@ -6,6 +6,14 @@
          version="3.1">
     
     <!-- Configuración de la aplicación web -->
+    <servlet>
+        <servlet-name>jsp</servlet-name>
+        <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+        <init-param>
+            <param-name>classpath</param-name>
+            <param-value>./</param-value>
+        </init-param>
+    </servlet>
     
     <welcome-file-list>
         <welcome-file>indexCliente.jsp</welcome-file>
@@ -13,6 +21,7 @@
     <session-config>
         <session-timeout>1</session-timeout> <!-- Duración en minutos -->
     </session-config>
+    
 
     
     <servlet>
