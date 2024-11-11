@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy WAR app to Azure Web App - CarwashMrMooon
+name: Build and deploy WAR app to Azure Web App - CarwashMrMoon
 
 on:
   push:
@@ -11,46 +8,63 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest  # Cambiado a Windows
 
     steps:
       - uses: actions/checkout@v4  # Clona tu repositorio
 
       - name: Set up Java version
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: '21'  # Configura Java 21 para el proyecto
+          java-version: '21'
+          distribution: 'microsoft'  # Configura Java 21 de Microsoft
 
       - name: Compile JSP project
         run: |
-          javac -cp ./librerias/servlet-api.jar -d ./build/classes $(find ./src -name "*.java")  # Compila los archivos Java
-          cp -r ./web/* ./build/web                              # Copia los archivos .jsp y web
-          jar -cvf ./target/carwashmrmoon.war -C ./build/web . -C ./build/classes .  # Empaqueta en un WAR
+          # Compila los archivos .java
+          javac -cp .\librerias\servlet-api.jar -d .\build\classes $(Find-Str .\src -Pattern "*.java")  
+          
+          # Copia los archivos .jsp y web
+          Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse 
+          
+          # Empaqueta en un archivo WAR
+          jar -cvf .\target\carwashmrmoon.war -C .\build\web . -C .\build\classes .
+          
+      - name: List target directory
+        run: dir .\target  # Verifica que el archivo WAR esté en la carpeta 'target'
 
-      - name: Upload WAR file as artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: './mi-aplicacion.war'  # Asegúrate de que el archivo WAR se esté subiendo correctamente
+          path: .\target\carwashmrmoon.war  # Asegúrate de que el archivo WAR se suba
 
   deploy:
-    runs-on: windows-latest
+    runs-on: windows-latest  # Cambiado a Windows
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: java-app  # Descarga el artefacto (el archivo WAR) del job de build
+          name: java-app  # Descarga el archivo WAR
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0BA2D6DB5B24465A8C7185D7210C62D1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_35CD6BD1F78C4349A6193B9453CD99BB }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C72A7441992B40D4934C4CAECB790B31 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'CarwashMrMooon'  # Nombre de tu App Service en Azure
-          slot-name: 'Production'  # Nombre del slot, usualmente 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_39DA7EB819CA47C9819FD73036EDD7AF }}  # Secreto de publicación de Azure
-          package: './mi-aplicacion.war'  # Ruta del archivo WAR generado
+          app-name: 'CarwashMrMoon'  # Nombre de tu Azure App Service
+          slot-name: 'Production'    # Nombre del slot
+          package: .\carwashmrmoon.war  # Ruta del archivo WAR
