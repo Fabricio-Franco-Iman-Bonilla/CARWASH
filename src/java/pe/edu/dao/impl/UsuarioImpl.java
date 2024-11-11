@@ -363,7 +363,7 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         PreparedStatement statement = null;
 
         // Consulta SQL para actualizar la fecha de inicio de sesión en un campo DATETIME
-        String sql = "UPDATE usuario SET fechaSesion = ?,ipUltimaSesion=? WHERE idUsuario = ?";
+        String sql = "UPDATE USUARIO SET fechaSesion = ?,ipUltimaSesion=? WHERE idUsuario = ?";
 
         try {
             Conexion c = new Conexion();
@@ -394,9 +394,9 @@ public class UsuarioImpl extends Usuario implements DAO<Usuario> {
         
 
         // Consulta SQL para actualizar la fecha de inicio de sesión en un campo DATETIME
-        String querySelect = "SELECT limiteIntentos, cuentaBloqueada FROM usuario WHERE idUsuario = ?";
-        String queryUpdateIntentos = "UPDATE usuario SET limiteIntentos = limiteIntentos - 1 WHERE idUsuario = ?";
-        String queryBloquearCuenta = "UPDATE usuario SET limiteIntentos = 0, cuentaBloqueada = 1, tiempoBloqueo = ? WHERE idUsuario = ?";
+        String querySelect = "SELECT limiteIntentos, cuentaBloqueada FROM USUARIO WHERE idUsuario = ?";
+        String queryUpdateIntentos = "UPDATE USUARIO SET limiteIntentos = limiteIntentos - 1 WHERE idUsuario = ?";
+        String queryBloquearCuenta = "UPDATE USUARIO SET limiteIntentos = 0, cuentaBloqueada = 1, tiempoBloqueo = ? WHERE idUsuario = ?";
 
         try {
             Conexion c = new Conexion();

@@ -25,7 +25,7 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "Select * from producto where idProducto='" + id + "';";
+            String consulta = "Select * from PRODUCTO where idProducto='" + id + "';";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);            
             resultado.next();
@@ -49,7 +49,7 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "Select * from producto";
+            String consulta = "Select * from PRODUCTO";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
             LinkedList<Producto> lista = new LinkedList<>();            
@@ -83,7 +83,7 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
             // Conexión y sentencia SQL
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "INSERT INTO producto (nombre, descripcion, precio, stock, stockMinimo, idProveedor) "
+            String consulta = "INSERT INTO PRODUCTO (nombre, descripcion, precio, stock, stockMinimo, idProveedor) "
                             + "VALUES(?, ?, ?, ?, ?, ?);";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, obj.getNombre());
@@ -110,7 +110,7 @@ public class ProductoImpl extends Producto implements DAO<Producto> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();            
-            String consulta = "delete from producto where idProducto=?;";
+            String consulta = "delete from PRODUCTO where idProducto=?;";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, id);
             sentencia.executeUpdate();

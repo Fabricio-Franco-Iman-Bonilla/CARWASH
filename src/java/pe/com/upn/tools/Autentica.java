@@ -25,7 +25,7 @@ public class Autentica {
             Connection cnx = c.conecta();
             //int contador = 0;
             
-            String consulta = "Select idRol from usuario where usuario='"+
+            String consulta = "Select idRol from USUARIO where usuario='"+
                     usr+"' and contrasena='"+psw+"';";
             
             Statement sentencia = cnx.createStatement();

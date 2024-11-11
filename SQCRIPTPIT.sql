@@ -135,7 +135,7 @@ CREATE TABLE USUARIO
     idPersona         INT  NULL
 );
 
-ALTER TABLE Usuario
+ALTER TABLE USUARIO
 ADD COLUMN cuentaBloqueada BOOLEAN DEFAULT FALSE,
 ADD COLUMN tiempoBloqueo TIMESTAMP NULL;
 
@@ -159,7 +159,7 @@ CREATE TABLE VEHICULO
 DELIMITER //
 
 CREATE TRIGGER IF NOT EXISTS bloquear_cuenta
-BEFORE UPDATE ON usuario
+BEFORE UPDATE ON USUARIO
 FOR EACH ROW
 BEGIN
     -- Si el número de intentos llega a 0, bloquea la cuenta y registra el tiempo de bloqueo

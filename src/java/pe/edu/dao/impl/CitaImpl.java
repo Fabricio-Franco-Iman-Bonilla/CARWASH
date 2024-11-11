@@ -31,7 +31,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "Select * from cita where idCita='" + id + "';";
+            String consulta = "Select * from CITA where idCita='" + id + "';";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
             
@@ -58,7 +58,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "Select * from cita ";
+            String consulta = "Select * from CITA ";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
             LinkedList<Cita> lista = new LinkedList<>();
@@ -89,7 +89,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
             LocalDateTime horario = obj.getHorario();
             Timestamp timestamp = Timestamp.valueOf(horario);
 
-            String consulta = "insert into cita (estado,horario,idUsuario,idPersona,idVehiculo) values(?,?,?,?,?);";
+            String consulta = "insert into CITA (estado,horario,idUsuario,idPersona,idVehiculo) values(?,?,?,?,?);";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, obj.getEstado());
             sentencia.setTimestamp(2, timestamp);
@@ -109,7 +109,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "delete from cita where idCita=?;";
+            String consulta = "delete from CITA where idCita=?;";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, id);
             sentencia.executeUpdate();
@@ -128,7 +128,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
             LocalDateTime horario = obj.getHorario();
             Timestamp timestamp = Timestamp.valueOf(horario);
             
-            String consulta = "update cita ";
+            String consulta = "update CITA ";
             consulta += "set estado=?, horario=?, ";
             consulta += "idUsuario=?, idPersona=?, idVehiculo=?  where idCita=?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
