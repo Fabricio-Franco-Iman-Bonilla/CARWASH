@@ -27,12 +27,16 @@ jobs:
           javac -cp ./librerias/servlet-api.jar -d ./build/classes $(find ./src -name "*.java")  # Compila los archivos Java con el classpath de servlet
           mkdir -p ./build/web                                     # Asegura que la carpeta de destino exista
           cp -r ./web/* ./build/web                                # Copia los archivos .jsp y demás archivos web
+          # Crear el archivo .war (suponiendo que usas un script o una estructura sencilla)
+          mkdir -p ./target
+          cd ./build
+          jar -cvf ../target/carwashmrmoon.war *
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: './target/carwashmrmoon.war'
 
   deploy:
     runs-on: ubuntu-latest
