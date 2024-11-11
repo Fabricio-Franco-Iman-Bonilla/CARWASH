@@ -26,7 +26,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "SELECT * FROM comprobante WHERE idComprobante = ?";
+            String consulta = "SELECT * FROM COMPROBANTE WHERE idComprobante = ?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, id);
             ResultSet resultado = sentencia.executeQuery();
@@ -58,7 +58,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "INSERT INTO comprobante (fecha_emision, metodo_pago, subtotal, id_usuario) VALUES (?, ?, ?, ?)";
+            String consulta = "INSERT INTO COMPROBANTE (fecha_emision, metodo_pago, subtotal, id_usuario) VALUES (?, ?, ?, ?)";
             PreparedStatement sentencia = cnx.prepareStatement(consulta, Statement.RETURN_GENERATED_KEYS);
 
             sentencia.setDate(1, new java.sql.Date(comprobante.getFechaEmision().getTime()));
@@ -91,14 +91,14 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
             // Primero eliminar los detalles asociados
-            String eliminarDetalles = "DELETE FROM detalle_comprobante WHERE idComprobante = ?";
+            String eliminarDetalles = "DELETE FROM DETALLE_COMPROBANTE WHERE idComprobante = ?";
             PreparedStatement sentenciaDetalles = cnx.prepareStatement(eliminarDetalles);
             sentenciaDetalles.setString(1, idComprobante);
             sentenciaDetalles.executeUpdate();
             sentenciaDetalles.close();
 
             // Luego eliminar el comprobante
-            String consulta = "DELETE FROM comprobante WHERE idComprobante = ?";
+            String consulta = "DELETE FROM COMPROBANTE WHERE idComprobante = ?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setString(1, idComprobante);
             sentencia.executeUpdate();
@@ -114,7 +114,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "UPDATE comprobante SET fechaEmision = ?, metodoPago = ?, subtotal = ?, idUsuario = ? WHERE idComprobante = ?";
+            String consulta = "UPDATE COMPROBANTE SET fechaEmision = ?, metodoPago = ?, subtotal = ?, idUsuario = ? WHERE idComprobante = ?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
 
             sentencia.setDate(1, new java.sql.Date(comprobante.getFechaEmision().getTime()));
@@ -142,7 +142,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
         try {
             Conexion c = new Conexion();
             Connection cnx = c.conecta();
-            String consulta = "SELECT * FROM comprobante";
+            String consulta = "SELECT * FROM COMPROBANTE";
             Statement sentencia = cnx.createStatement();
             ResultSet resultado = sentencia.executeQuery(consulta);
 
@@ -170,7 +170,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
 
     // Método auxiliar para obtener los detalles de un comprobante específico
     private List<DetalleComprobante> obtenerDetalles(int idComprobante, Connection cnx) throws SQLException {
-        String consulta = "SELECT * FROM detalle_comprobante dc JOIN cita c ON dc.idCita = c.idCita WHERE dc.idComprobante = ?";
+        String consulta = "SELECT * FROM DETALLE_COMPROBANTE dc JOIN cita c ON dc.idCita = c.idCita WHERE dc.idComprobante = ?";
         PreparedStatement sentencia = cnx.prepareStatement(consulta);
         sentencia.setInt(1, idComprobante);
         ResultSet resultado = sentencia.executeQuery();
@@ -198,7 +198,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
     }
 
     private void guardarDetalle(DetalleComprobante detalle, int idComprobante, Connection cnx) throws SQLException {
-        String consulta = "INSERT INTO detalle_comprobante (idComprobante, idCita) VALUES (?, ?)";
+        String consulta = "INSERT INTO DETALLE_COMPROBANTE (idComprobante, idCita) VALUES (?, ?)";
         PreparedStatement sentencia = cnx.prepareStatement(consulta);
         sentencia.setInt(1, idComprobante);
         sentencia.setInt(2, detalle.getCita().getIdCita());
@@ -207,7 +207,7 @@ public class ComprobanteImpl extends Comprobante implements DAO<Comprobante> {
     }
 
     private void eliminarDetalles(int idComprobante, Connection cnx) throws SQLException {
-        String consulta = "DELETE FROM detalle_comprobante WHERE idComprobante = ?";
+        String consulta = "DELETE FROM DETALLE_COMPROBANTE WHERE idComprobante = ?";
         PreparedStatement sentencia = cnx.prepareStatement(consulta);
         sentencia.setInt(1, idComprobante);
         sentencia.executeUpdate();
