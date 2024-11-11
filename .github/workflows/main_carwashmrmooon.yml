@@ -1,45 +1,40 @@
-name: Build and deploy WAR app to Azure Web App - CarwashMrMoon
+name: Deploy to Azure Web App
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest  # Cambiado a Windows
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3  # Clona tu repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Java version
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'microsoft'  # Configura Java 21 de Microsoft
 
-      - name: Compile JSP project
+      - name: Compile .java files
         run: |
-          # Compila los archivos .java
           javac -cp .\librerias\servlet-api.jar -d .\build\classes $(Get-ChildItem .\src -Recurse -Filter "*.java" | ForEach-Object { $_.FullName })
-          
-          # Copia los archivos .jsp y web, sobrescribiendo los existentes
-          Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse -Force
-          
-          # Empaqueta en un archivo WAR
+      
+      - name: Copy .jsp and web files
+        run: |
+          Copy-Item -Path .\web\* -Destination .\build\web\ -Recurse
+
+      - name: Package WAR file
+        run: |
           jar -cvf .\target\carwashmrmoon.war -C .\build\web . -C .\build\classes .
 
-
-          
-      - name: List target directory
-        run: dir .\target  # Verifica que el archivo WAR esté en la carpeta 'target'
-
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: .\target\carwashmrmoon.war  # Asegúrate de que el archivo WAR se suba
+          path: .\target\carwashmrmoon.war
 
   deploy:
     runs-on: windows-latest
@@ -62,14 +57,14 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}  # Si usas secreto de cliente
           enable-AzPSSession: false
           environment: azurecloud
+          auth-type: SERVICE_PRINCIPAL
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'CarwashMrMoon'
-          slot-name: 'Production'
+          app-name: 'CarwashMrMoon'  # Nombre de la aplicación en Azure
+          slot-name: 'Production'  # Nombre del entorno de producción (si tienes slots)
           package: '*.war'
