@@ -19,7 +19,7 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '22'
           distribution: 'microsoft'
 
       - name: Compile JSP project
@@ -29,8 +29,7 @@ jobs:
           cp -r ./web/* ./build/web                                # Copia los archivos .jsp y demás archivos web
           # Crear el archivo .war (suponiendo que usas un script o una estructura sencilla)
           mkdir -p ./target
-          cd ./build
-          jar -cvf ../target/carwashmrmoon.war *
+          jar -cvf ./target/carwashmrmoon.war -C ./build .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
