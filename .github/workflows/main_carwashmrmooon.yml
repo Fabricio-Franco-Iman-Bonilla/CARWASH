@@ -14,21 +14,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4  # Clona tu repositorio
 
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
-          java-version: '21'
+          java-version: '21'  # Configura Java 21 para el proyecto
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build WAR file manually
+        run: |
+          # Asegúrate de que tu archivo WAR se genere correctamente
+          # Primero, navega al directorio de tu proyecto y usa el siguiente comando:
+          cd ./  # Ajusta esto según la ubicación de tu proyecto
+          jar -cvf mi-aplicacion.war -C ./src/main/webapp .  # Crear el archivo WAR desde tu carpeta de aplicación JSP
 
-      - name: Upload artifact for deployment job
+      - name: Upload WAR file as artifact
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: './mi-aplicacion.war'  # Asegúrate de que el archivo WAR se esté subiendo correctamente
 
   deploy:
     runs-on: windows-latest
@@ -41,13 +45,13 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: java-app
+          name: java-app  # Descarga el artefacto (el archivo WAR) del job de build
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'CarwashMrMooon'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_39DA7EB819CA47C9819FD73036EDD7AF }}
-          package: '*.war'
+          app-name: 'CarwashMrMooon'  # Nombre de tu App Service en Azure
+          slot-name: 'Production'  # Nombre del slot, usualmente 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_39DA7EB819CA47C9819FD73036EDD7AF }}  # Secreto de publicación de Azure
+          package: './mi-aplicacion.war'  # Ruta del archivo WAR generado
