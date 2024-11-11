@@ -30,6 +30,9 @@ jobs:
           # Crear el archivo .war (suponiendo que usas un script o una estructura sencilla)
           mkdir -p ./target
           jar -cvf ./target/carwashmrmoon.war -C ./build .
+      - name: List files in target directory
+        run: |
+          ls -la ./target
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -65,5 +68,6 @@ jobs:
         with:
           app-name: 'CarwashMrMoon'
           slot-name: 'Production'
+          package: './target/carwashmrmoon.war'
           
           
