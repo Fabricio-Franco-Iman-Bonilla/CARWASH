@@ -21,12 +21,11 @@ jobs:
         with:
           java-version: '21'  # Configura Java 21 para el proyecto
 
-      - name: Build WAR file manually
+      - name: Compile JSP project
         run: |
-          # Asegúrate de que tu archivo WAR se genere correctamente
-          # Primero, navega al directorio de tu proyecto y usa el siguiente comando:
-          cd ./  # Ajusta esto según la ubicación de tu proyecto
-          jar -cvf mi-aplicacion.war -C ./src/main/webapp .  # Crear el archivo WAR desde tu carpeta de aplicación JSP
+          javac -cp ./librerias/servlet-api.jar -d ./build/classes $(find ./src -name "*.java")  # Compila los archivos Java
+          cp -r ./web/* ./build/web                              # Copia los archivos .jsp y web
+          jar -cvf ./target/carwashmrmoon.war -C ./build/web . -C ./build/classes .  # Empaqueta en un WAR
 
       - name: Upload WAR file as artifact
         uses: actions/upload-artifact@v3
