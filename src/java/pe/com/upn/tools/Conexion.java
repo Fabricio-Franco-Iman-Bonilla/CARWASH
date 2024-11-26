@@ -15,9 +15,9 @@ public class Conexion {
         //COMENTARIO PRUEBA JOMICHI
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://node166094-carwashmr.jcloud-ver-jpe.ik-server.com:3306/CAWASH?useSSL=false&connectTimeout=5000&socketTimeout=5000";
+            String url = "jdbc:mysql://node167159-cawashmoon.jcloud-ver-jpe.ik-server.com:3306/CAWASH?useSSL=false&connectTimeout=5000&socketTimeout=5000";
             String usr = "root";
-            String psw = "hsfex3I21k";
+            String psw = "gKtlr4pFHQ";
             cnx = DriverManager.getConnection(url, usr, psw);
             String conetao = "EXITOOOOO";
             return cnx;

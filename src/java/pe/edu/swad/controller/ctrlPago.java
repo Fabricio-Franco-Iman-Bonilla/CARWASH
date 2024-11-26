@@ -55,6 +55,13 @@ public class ctrlPago extends HttpServlet {
 
         //FALTA EGULAR MAÑANA
         if ("pago_nuevo".equals(pag)) {
+            String sessionToken = (String) request.getSession().getAttribute("csrfToken");
+            String requestToken = request.getParameter("csrfToken");
+
+            if (sessionToken == null || !sessionToken.equals(requestToken)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF Token inválido o ausente");
+                return;
+            }
             System.out.println(id_p + " " + dni + " " + nom + " " + pla + " " + tip_lav + " " + tam_auto + " " + prec);
             pago.nuevo(pago);
 

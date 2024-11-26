@@ -80,6 +80,7 @@
                 <br><br>
                 <input type="button" value="Cancelar" class="btn btn-danger" style="width: 100%" onclick="cancelar()">
                 <input type="hidden" value="login" name="pagina">
+                <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                 <script>
                     function cancelar() {
                         window.location.href = "indexCliente.jsp";

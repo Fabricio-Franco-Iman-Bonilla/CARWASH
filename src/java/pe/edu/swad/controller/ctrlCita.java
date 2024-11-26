@@ -63,7 +63,7 @@ public class ctrlCita extends HttpServlet {
         if (request.getParameter("usuario_id") != null) {
             usuario_id = Integer.parseInt(request.getParameter("usuario_id"));
         }
-        
+
         if (request.getParameter("idVehiculo") != null) {
             idVehiculo = Integer.parseInt(request.getParameter("idVehiculo"));
         }
@@ -77,9 +77,8 @@ public class ctrlCita extends HttpServlet {
             // Convertir el String a LocalDateTime
             fechaHora = LocalDateTime.parse(fechaHoraStr);
 
-          
         }
-        idPersona=usr.obteneriIdPersonaPorIdUsuario(usuario_id);
+        idPersona = usr.obteneriIdPersonaPorIdUsuario(usuario_id);
 
         cita.setId(id);
         cita.setEstado(estado);
@@ -89,6 +88,13 @@ public class ctrlCita extends HttpServlet {
         cita.setIdVehiculo(idVehiculo);
 
         if (pag.equals("cita_nuevo")) {
+            String sessionToken = (String) request.getSession().getAttribute("csrfToken");
+            String requestToken = request.getParameter("csrfToken");
+
+            if (sessionToken == null || !sessionToken.equals(requestToken)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF Token inválido o ausente");
+                return;
+            }
 
             String y = request.getParameter("opcion");
             if (y.equals("usr")) {

@@ -15,12 +15,21 @@
         </init-param>
     </servlet>
     
+    <session-config>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>true</secure>
+        </cookie-config>
+        <session-timeout>10</session-timeout> 
+    </session-config>
+    
+
+
+    
     <welcome-file-list>
         <welcome-file>indexCliente.jsp</welcome-file>
     </welcome-file-list>
-    <session-config>
-        <session-timeout>1</session-timeout> <!-- Duración en minutos -->
-    </session-config>
+    
     
 
     
@@ -42,6 +51,20 @@
         <url-pattern>*.jsp</url-pattern> <!-- Aplica a todas las rutas -->
         
     </filter-mapping>
+    
+    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+        
+        <error-code>405</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+
     
     
 
