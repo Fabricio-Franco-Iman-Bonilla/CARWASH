@@ -34,6 +34,36 @@ public class AuthFilter implements Filter {
         Object rolObject = (session != null) ? session.getAttribute("rol") : null;
         String rol = null;
 
+        // Define la política CSP
+        httpResponse.setHeader("Content-Security-Policy",
+                "default-src 'self'; "
+                + "style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdn.datatables.net; "
+                + "script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://ajax.googleapis.com https://cdn.datatables.net; "
+                + "font-src 'self' https://fonts.gstatic.com; "
+                + "connect-src 'self' https://cdn.datatables.net; "
+                + "img-src 'self' https://www.gstatic.com/recaptcha/ https://cdn.datatables.net ; "
+                + "object-src 'none'; "
+                + "frame-src https://www.google.com/recaptcha/; "
+                + "media-src 'self';"
+                + "form-action 'self'; "
+                + "frame-ancestors 'none';");
+
+        // Métodos permitidos
+        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST");
+
+        // Cabeceras permitidas
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+        // Permitir cookies en solicitudes cross-origin
+        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+            httpResponse.setHeader("Access-Control-Allow-Origin", "https://tudominio.com");
+            httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST");
+            httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            return;
+        }
+
         if (rolObject != null) {
             if (rolObject instanceof Integer) {
                 // Si el rol es Integer, conviértelo a String
@@ -48,10 +78,10 @@ public class AuthFilter implements Filter {
 
         boolean isAdminPath = !(requestURI.contains("Cliente") || requestURI.contains("cliente"));
         boolean isUserPath = (requestURI.contains("Cliente") || requestURI.contains("cliente"));
-        
+
         // Verifica si la sesión ya está activa y manda de frente a pantalla principal
         if (requestURI.equals("/CarWash-develop/login.jsp") && "2".equals(rol)) {
-            
+
             httpResponse.sendRedirect("dashboard.jsp"); // Cambia esto a tu página de error
             return;
         } else if (requestURI.equals("/CarWash-develop/login.jsp") && "1".equals(rol)) {
@@ -91,8 +121,6 @@ public class AuthFilter implements Filter {
             httpResponse.sendRedirect("error.jsp");
             return;
         }
-        
-        
 
         // Si está autenticado correctamente, continúa con la solicitud
         chain.doFilter(request, response);

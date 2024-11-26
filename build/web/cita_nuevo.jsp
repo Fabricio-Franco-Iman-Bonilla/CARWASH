@@ -21,6 +21,7 @@
     <input type="hidden" name="pagina" value="cita_nuevo">
     
     <a href="dashCitas.jsp?pagina=cita_listar" class="btn btn-danger">Cancelar</a>
+    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
     
     <input type="submit" class="btn btn-success" value="Aceptar">
 </form>

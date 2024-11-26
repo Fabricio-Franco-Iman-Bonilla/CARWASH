@@ -111,6 +111,7 @@
             </div>
 
             <input type="hidden" name="pagina" value="usuario_nuevo">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
 
             <!-- Botones de acción -->
             <div class="text-center mt-4">

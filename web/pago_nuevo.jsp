@@ -125,6 +125,7 @@
             <br>
             <input type="hidden" name="pagina" value="pago_nuevo">
             <input type="submit" class="btn btn-info" value="Aceptar">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
             <a href="dashPagos.jsp?pagina=pago_listar" class="btn btn-danger" style="width: 270px">Cancelar</a>
         </form>
     </div>

@@ -21,6 +21,7 @@ import pe.edu.dao.entity.Usuario;
 import pe.edu.dao.impl.UsuarioImpl;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import javax.servlet.http.Cookie;
 
@@ -40,152 +41,170 @@ public class ctrlUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Autentica au = new Autentica();
+        try {
 
-        UsuarioImpl usuario = new UsuarioImpl();
-        Usuario usu = new Usuario();
+            Autentica au = new Autentica();
 
-        String id = "";
-        String nom = "";
-        String apel = "";
-        String corre = "";
-        String tele = "";
-        String contra = "";
-        String numDocumento = "";
-        String rol = "-1";
-        String usuname = "";
-        int rolNum = -1;
+            UsuarioImpl usuario = new UsuarioImpl();
+            Usuario usu = new Usuario();
 
-        String pag = "";
+            String id = "";
+            String nom = "";
+            String apel = "";
+            String corre = "";
+            String tele = "";
+            String contra = "";
+            String numDocumento = "";
+            String rol = "-1";
+            String usuname = "";
+            int rolNum = -1;
 
-        if (request.getParameter("usuario_id") != null) {
-            id = request.getParameter("usuario_id");
-        }
-        if (request.getParameter("usuario_nombre") != null) {
-            nom = request.getParameter("usuario_nombre");
-        }
-        if (request.getParameter("usuario_apellido") != null) {
-            apel = request.getParameter("usuario_apellido");
-        }
-        if (request.getParameter("usuario_correo") != null) {
-            corre = request.getParameter("usuario_correo");
-        }
-        if (request.getParameter("usuario_telefono") != null) {
-            tele = request.getParameter("usuario_telefono");
-        }
-        if (request.getParameter("usuario_usuario") != null) {
-            usuname = request.getParameter("usuario_usuario");
-        }
-        if (request.getParameter("pagina") != null) {
-            pag = request.getParameter("pagina");
-        }
-        if (request.getParameter("usuario_password") != null) {
-            contra = request.getParameter("usuario_password");
-        }
-        if (request.getParameter("usuario_rol") != null) {
-            rol = request.getParameter("usuario_rol");
-        }
-        if (request.getParameter("usuario_numDocumento") != null) {
-            numDocumento = request.getParameter("usuario_numDocumento");
-        }
+            String pag = "";
 
-        Hash h = new Hash();
-        contra = h.StringToHash(contra, "SHA-256");
-
-        rolNum = Integer.parseInt(rol);
-        usu.setUsuario_nombre(nom);
-        usu.setUsuario_tipoDocumento("dsda");
-        usu.setUsuario_numDocumento(numDocumento);
-        usu.setUsuario_apellido(apel);
-        usu.setUsuario_telefono(tele);
-        usu.setUsuario_correo(corre);
-        usu.setUsuario_usuario(usuname);
-        usu.setUsuario_password(contra);
-        usu.setUsuario_rol(rolNum);
-
-        if (pag.equals("usuario_nuevo")) {
-            usuario.nuevo(usu);
-            response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
-        } else if (pag.equals("usuario_eliminar")) {
-
-            usuario.eliminar(id);
-            response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
-
-        } else if (pag.equals("usuario_editar")) {
-            usu.setUsuario_id(Integer.parseInt(id));
-            usuario.editar(usu);
-            response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
-        } else if (pag.equals("login")) {
-
-            String usr = request.getParameter("usuario");
-            String psw = request.getParameter("password");
-
-            int logueado = au.getLogueado(usr, psw);
-
-            // Verificar CAPTCHA antes de proceder
-            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
-
-            if (!captchaVerified) {
-                //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
-                // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
-                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-                dispatcher.forward(request, response);
-                return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
+            if (request.getParameter("usuario_id") != null) {
+                id = request.getParameter("usuario_id");
+            }
+            if (request.getParameter("usuario_nombre") != null) {
+                nom = request.getParameter("usuario_nombre");
+            }
+            if (request.getParameter("usuario_apellido") != null) {
+                apel = request.getParameter("usuario_apellido");
+            }
+            if (request.getParameter("usuario_correo") != null) {
+                corre = request.getParameter("usuario_correo");
+            }
+            if (request.getParameter("usuario_telefono") != null) {
+                tele = request.getParameter("usuario_telefono");
+            }
+            if (request.getParameter("usuario_usuario") != null) {
+                usuname = request.getParameter("usuario_usuario");
+            }
+            if (request.getParameter("pagina") != null) {
+                pag = request.getParameter("pagina");
+            }
+            if (request.getParameter("usuario_password") != null) {
+                contra = request.getParameter("usuario_password");
+            }
+            if (request.getParameter("usuario_rol") != null) {
+                rol = request.getParameter("usuario_rol");
+            }
+            if (request.getParameter("usuario_numDocumento") != null) {
+                numDocumento = request.getParameter("usuario_numDocumento");
             }
 
-            // Obtener la sesión
-            String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
-            UsuarioImpl u = new UsuarioImpl();
-            u.ver(usuarioId);
-            HttpSession session = request.getSession();
-            // Guardar un dato en la sesión
-            session.setAttribute("nombreUsuario", usuarioId);
-            session.setAttribute("rol", u.getUsuario_rol());
+            Hash h = new Hash();
+            contra = h.StringToHash(contra, "SHA-256");
 
-            Integer intentos = (Integer) session.getAttribute("intentos");
-            if (intentos == null) {
-                intentos = 0;
-            }
-            boolean bloqueado = false;
+            rolNum = Integer.parseInt(rol);
+            usu.setUsuario_nombre(nom);
+            usu.setUsuario_tipoDocumento("dsda");
+            usu.setUsuario_numDocumento(numDocumento);
+            usu.setUsuario_apellido(apel);
+            usu.setUsuario_telefono(tele);
+            usu.setUsuario_correo(corre);
+            usu.setUsuario_usuario(usuname);
+            usu.setUsuario_password(contra);
+            usu.setUsuario_rol(rolNum);
 
-            int limiteIntentos = u.getLimiteIntentos();
-            if (usuarioId.contains("-1")) {
-                limiteIntentos = 3;
-            }
+            if (pag.equals("usuario_nuevo")) {
+                String sessionToken = (String) request.getSession().getAttribute("csrfToken");
+                String requestToken = request.getParameter("csrfToken");
 
-            if (logueado == 1 && !u.getUsuario_cuentabloqueda()) {
-                
-                logueoExitoso(request, response, session, u);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("dashCliente.jsp");
-                dispatcher.forward(request, response);
-            } else if (logueado == 2 && !u.getUsuario_cuentabloqueda()) {
-                
-                logueoExitoso(request, response, session, u);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                intentos++;
-                session.setAttribute("intentos", intentos);
-                usuario.restarIntentos(usuario.obtenerUsuarioIdPorUsuario(usr));
-
-                if (limiteIntentos == 0) {
-                    intentos = 0;
-                    bloqueado = true;
-                    request.setAttribute("bloqueado", bloqueado);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=too_many_attempts");
-                    dispatcher.forward(request, response);
-
-                } else {
-                    request.setAttribute("bloqueado", false);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=true");
-                    dispatcher.forward(request, response);
+                if (sessionToken == null || !sessionToken.equals(requestToken)) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF Token inválido o ausente");
+                    return;
                 }
-                session.setAttribute("intentos", limiteIntentos);
+                usuario.nuevo(usu);
+                response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
+            } else if (pag.equals("usuario_eliminar")) {
+
+                usuario.eliminar(id);
+                response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
+
+            } else if (pag.equals("usuario_editar")) {
+                usu.setUsuario_id(Integer.parseInt(id));
+                usuario.editar(usu);
+                response.sendRedirect("dashboard.jsp?pagina=usuario_listar");
+            } else if (pag.equals("login")) {
+                String csrfToken = UUID.randomUUID().toString();
+                request.getSession().setAttribute("csrfToken", csrfToken);
+
+                String usr = request.getParameter("usuario");
+                String psw = request.getParameter("password");
+
+                int logueado = au.getLogueado(usr, psw);
+
+                // Verificar CAPTCHA antes de proceder
+                String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+                boolean captchaVerified = verifyRecaptcha(gRecaptchaResponse);
+
+                if (!captchaVerified) {
+                    //QUE NO RECARGUE LA PAGINA SOLO QUE MUESTRE QUE SE NECESITA RE VALIDAR EL CAPTCHA O QUE FUE INCORRECTO
+                    // Si el CAPTCHA no es válido, redirigir a la página de error o mostrar mensaje
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                    dispatcher.forward(request, response);
+                    return; // Termina la ejecución del método aquí si el CAPTCHA no es válido
+                }
+
+                // Obtener la sesión
+                String usuarioId = String.valueOf(usuario.obtenerUsuarioIdPorUsuario(usr));
+                UsuarioImpl u = new UsuarioImpl();
+                u.ver(usuarioId);
+                HttpSession session = request.getSession();
+                // Guardar un dato en la sesión
+                session.setAttribute("nombreUsuario", usuarioId);
+                session.setAttribute("rol", u.getUsuario_rol());
+
+                Integer intentos = (Integer) session.getAttribute("intentos");
+                if (intentos == null) {
+                    intentos = 0;
+                }
+                boolean bloqueado = false;
+
+                int limiteIntentos = u.getLimiteIntentos();
+                if (usuarioId.contains("-1")) {
+                    limiteIntentos = 3;
+                }
+
+                if (logueado == 1 && !u.getUsuario_cuentabloqueda()) {
+
+                    logueoExitoso(request, response, session, u);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("dashCliente.jsp");
+                    dispatcher.forward(request, response);
+                } else if (logueado == 2 && !u.getUsuario_cuentabloqueda()) {
+
+                    logueoExitoso(request, response, session, u);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    intentos++;
+                    session.setAttribute("intentos", intentos);
+                    usuario.restarIntentos(usuario.obtenerUsuarioIdPorUsuario(usr));
+
+                    if (limiteIntentos == 0) {
+                        intentos = 0;
+                        bloqueado = true;
+                        request.setAttribute("bloqueado", bloqueado);
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=too_many_attempts");
+                        dispatcher.forward(request, response);
+
+                    } else {
+                        request.setAttribute("bloqueado", false);
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?error=true");
+                        dispatcher.forward(request, response);
+                    }
+                    session.setAttribute("intentos", limiteIntentos);
+
+                }
 
             }
-
+        } catch (Exception e) {
+            // Manejo general de excepciones
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Ocurrió un error inesperado.");
+            // Registra el error para su revisión sin mostrar detalles al usuario
+            log("Error procesando la solicitud", e);
         }
+
     }
 
     private boolean verifyRecaptcha(String gRecaptchaResponse) {
@@ -234,6 +253,9 @@ public class ctrlUsuario extends HttpServlet {
         ipAddress = u.obtenerIpPublica();
         session = request.getSession();
         session.setAttribute("usuario", u.getUsuario_usuario());
+        // Generar un nuevo token en cada acción sensible
+        String csrfToken = UUID.randomUUID().toString();
+        request.getSession().setAttribute("csrfToken", csrfToken);
 
         // Obtener la fecha y hora actual
         Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -246,6 +268,9 @@ public class ctrlUsuario extends HttpServlet {
         Cookie rolCookie = new Cookie("userRole", String.valueOf(u.getUsuario_rol())); // "admin" o "usuario" basado en el rol
         rolCookie.setMaxAge(1 * 60); // La cookie expira en 30 minutos
         response.addCookie(rolCookie);
+        response.setHeader("X-Frame-Options", "DENY");
+        response.setHeader("Content-Security-Policy", "script-src 'self'; object-src 'none';");
+        response.setHeader("Set-Cookie", "JSESSIONID=" + session.getId() + "; HttpOnly; Secure; SameSite=Strict");
 
     }
 }
