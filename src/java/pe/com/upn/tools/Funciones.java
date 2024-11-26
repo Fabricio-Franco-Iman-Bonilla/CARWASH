@@ -128,10 +128,6 @@ public class Funciones {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
 
-        if (obj.getStock() < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo.");
-        }
-
         if (obj.getPrecio() <= 0) {
             throw new IllegalArgumentException("El precio debe ser mayor a 0.");
         }

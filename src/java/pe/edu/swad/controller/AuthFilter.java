@@ -99,6 +99,10 @@ public class AuthFilter implements Filter {
                 || requestURI.equals("/CarWash-develop/login.jsp")
                 || requestURI.equals("/CarWash-develop/")
                 || requestURI.equals("/CarWash-develop/registrarse.jsp")
+                || requestURI.equals("/CarWash-develop/ctrlUsuario")
+                || requestURI.equals("/CarWash-develop/ctrlProducto")
+                || requestURI.equals("/CarWash-develop/ctrlPago")
+                || requestURI.equals("/CarWash-develop/ctrlCita")
                 || requestURI.equals("/CarWash-develop/error.jsp")) {
             chain.doFilter(request, response); // Permitir acceso
             return;

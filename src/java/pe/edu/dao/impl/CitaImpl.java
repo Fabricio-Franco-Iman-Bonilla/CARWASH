@@ -160,7 +160,7 @@ public class CitaImpl extends Cita implements DAO<Cita> {
                     + "INNER JOIN VEHICULO V ON C.idVehiculo = V.idVehiculo "
                     +"INNER JOIN USUARIO U ON C.idUsuario = U.idUsuario "
                     +"INNER JOIN PERSONA P ON U.idPersona = P.idPersona "
-                    + "WHERE u.idUsuario = ?";
+                    + "WHERE U.idUsuario = ?";
             PreparedStatement sentencia = cnx.prepareStatement(consulta);
             sentencia.setInt(1, x);
             ResultSet resultado = sentencia.executeQuery();

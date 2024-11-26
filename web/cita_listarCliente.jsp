@@ -17,12 +17,6 @@
             String nombreUsuario = (String) session.getAttribute("nombreUsuario");
             lista = cit.listar2(nombreUsuario);
     
-    
-    
-    
-    
-    
-    
 %>
 
 
@@ -76,6 +70,6 @@
     </tbody>
     
 </table>
-    <%
-    }
+<%
+}
 %>

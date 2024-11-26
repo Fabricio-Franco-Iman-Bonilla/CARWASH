@@ -48,6 +48,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
+        <url-pattern>/ctrlProducto</url-pattern>
         <url-pattern>*.jsp</url-pattern> <!-- Aplica a todas las rutas -->
         
     </filter-mapping>

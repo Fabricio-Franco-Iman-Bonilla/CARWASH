@@ -42,6 +42,18 @@ public class ctrlUsuario extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            response.setHeader("Content-Security-Policy",
+                "default-src 'self'; "
+                + "style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdn.datatables.net; "
+                + "script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://ajax.googleapis.com https://cdn.datatables.net; "
+                + "font-src 'self' https://fonts.gstatic.com; "
+                + "connect-src 'self' https://cdn.datatables.net; "
+                + "img-src 'self' https://www.gstatic.com/recaptcha/ https://cdn.datatables.net ; "
+                + "object-src 'none'; "
+                + "frame-src https://www.google.com/recaptcha/; "
+                + "media-src 'self';"
+                + "form-action 'self'; "
+                + "frame-ancestors 'none';");
 
             Autentica au = new Autentica();
 
